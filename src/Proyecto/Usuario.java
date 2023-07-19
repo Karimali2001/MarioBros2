@@ -7,7 +7,7 @@ package Proyecto;
 
 /**
  *
- * @author morim
+ * @author Yamal
  */
 public class Usuario {
     public String nombre;

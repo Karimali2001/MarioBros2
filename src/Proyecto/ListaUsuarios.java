@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author morim
+ * @author Yamal
  */
 public class ListaUsuarios {
     //atributos

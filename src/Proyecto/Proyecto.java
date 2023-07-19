@@ -11,8 +11,7 @@ import java.io.FileWriter;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
-import main.Game;
-import main.MainClass;
+
 
 /**
  *
@@ -58,7 +57,6 @@ public class Proyecto {
     public static void main(String[] args) {
         leerArchivoUsuarios();
         new Inicio().setVisible(true);
-        //new Game();
     }
     
 }
