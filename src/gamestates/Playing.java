@@ -4,6 +4,7 @@
  */
 package gamestates;
 
+import entities.EnemyManager;
 import entities.Player;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -21,7 +22,10 @@ public class Playing extends State implements StateMethods {
 
     //atributos
     private Player player; //personaje
-    private LevelManager levelManager;
+    private LevelManager levelManager; //manejador de niveles
+    private EnemyManager enemyManager; //manejador de enemigos
+    
+    
     
     //para mover el fondo dependiendo de la posicion del jugador
     private int xLvlOffset; //distancia entre el jugador y el borde
@@ -46,6 +50,8 @@ public class Playing extends State implements StateMethods {
     //metodo iniciador de todas las entidades en el juego
     private void initClasses() {
         levelManager = new LevelManager(game);
+        enemyManager = new EnemyManager(this);
+        
         player = new Player(200, 200, (int) (64 * SCALE), (int) (40 * SCALE));
 
         player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
@@ -60,6 +66,7 @@ public class Playing extends State implements StateMethods {
     public void update() {
         levelManager.update();
         player.update();
+        enemyManager.update();
         checkCloseToBorder();
     }
 
@@ -67,6 +74,7 @@ public class Playing extends State implements StateMethods {
     public void draw(Graphics g) {
         levelManager.draw(g, xLvlOffset);
         player.render(g,xLvlOffset);
+        enemyManager.draw(g,xLvlOffset);
     }
 
     @Override

@@ -6,15 +6,18 @@
 //clase para cargar y guardar imagenes, audios etc
 package utilz;
 
+import entities.Goomba;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import main.Game;
 import main.GamePanel;
+import utilz.Constants.EnemyConstants;
 
 /**
  *
@@ -45,6 +48,22 @@ public class LoadSave {
         return img;
     }
     
+    //toma los goombas declarados en la imagen mapa
+    public static ArrayList<Goomba> getGoombas(){
+        BufferedImage img = getSpriteAtlas(LEVEL_ONE_DATA);
+        ArrayList<Goomba> list = new ArrayList();
+                //recorremos el tile map revisando por pixel por pixel
+        for(int j=0;j<img.getHeight();j++)
+            for(int i=0;i<img.getWidth();i++){
+                Color color = new Color(img.getRGB(i,j)); //obtenemos el color del pixel en la posicion i,j de la imagen
+                int value = color.getGreen(); //agarramos el valor de la componente R
+                
+                if(value == EnemyConstants.GOOMBA)//por si la componente es mayor a la cantidad de tiles que disponemos (48)
+                    list.add(new Goomba(i*Game.TILES_SIZE, j*Game.TILES_SIZE));
+                
+            }
+        return list;
+    }
     
     //forma de representar niveles
     //donde cada pixel de la imagen es una posicion del nivel

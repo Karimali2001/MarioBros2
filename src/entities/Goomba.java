@@ -4,6 +4,8 @@
  */
 package entities;
 
+import static utilz.Constants.EnemyConstants.*;
+
 /**
  *
  * @author karim
@@ -12,8 +14,12 @@ public class Goomba extends Enemy{
     //atributos
     
     //constructor
-    public Goomba(float x, float y, int width, int height, int enemyType) {
-        super(x, y, width, height, enemyType);
+    public Goomba(float x, float y) {
+        super(x, y, GOOMBA_WIDTH, GOOMBA_HEIGHT, GOOMBA);
     }
+    
+    //set/get
+    
+    //otros metodos
     
 }

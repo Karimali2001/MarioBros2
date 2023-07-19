@@ -22,11 +22,11 @@ public class Constants {
         public static final int MOVING = 0;
         public static final int DEAD = 1;
         
-        public static final int GOOMBA_WIDTH_DEFAULT = 72;
-        public static final int GOOMBA_HEIGHT_DEFAULT = 32;
+        public static final int GOOMBA_WIDTH_DEFAULT = 47;
+        public static final int GOOMBA_HEIGHT_DEFAULT = 40;
         
-        public final static int GOOMBA_WIDTH = (int) (GOOMBA_WIDTH_DEFAULT*Game.SCALE);
-        public final static int GOOMBA_HEIGHT = (int) (GOOMBA_HEIGHT_DEFAULT*Game.SCALE);
+        public final static int GOOMBA_WIDTH = (int) (GOOMBA_WIDTH_DEFAULT*Game.SCALE*0.7);
+        public final static int GOOMBA_HEIGHT = (int) (GOOMBA_HEIGHT_DEFAULT*Game.SCALE*0.7);
         
         public static int getSpriteAmount(int enemyType, int enemyState){
             switch(enemyType){
