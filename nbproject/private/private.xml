@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/gamestates/State.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/levels/Level.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/IMAGENES/0e5a50ba566b1e06a326567b0f46a3d1.png</file>
@@ -19,6 +20,21 @@
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/utilz/LoadSave.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/Proyecto/Usuario.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/GUI/Inicio.java</file>
+=======
+            <file>file:/C:/Users/Richard%20Abousaid/Desktop/mariobros/MarioBros2/src/Proyecto/ListaUsuarios.java</file>
+            <file>file:/C:/Users/Richard%20Abousaid/Desktop/mariobros/MarioBros2/src/GUI/Ayuda.java</file>
+            <file>file:/C:/Users/Richard%20Abousaid/Desktop/mariobros/MarioBros2/src/levels/Level.java</file>
+            <file>file:/C:/Users/Richard%20Abousaid/Desktop/mariobros/MarioBros2/src/GUI/Estadisticas.java</file>
+            <file>file:/C:/Users/Richard%20Abousaid/Desktop/mariobros/MarioBros2/src/Proyecto/Usuario.java</file>
+            <file>file:/C:/Users/Richard%20Abousaid/Desktop/mariobros/MarioBros2/src/inputs/KeyboardInputs.java</file>
+            <file>file:/C:/Users/Richard%20Abousaid/Desktop/mariobros/MarioBros2/src/GUI/Menu.java</file>
+            <file>file:/C:/Users/Richard%20Abousaid/Desktop/mariobros/MarioBros2/src/IMAGENES/Mariobandera.png</file>
+            <file>file:/C:/Users/Richard%20Abousaid/Desktop/mariobros/MarioBros2/src/Proyecto/Proyecto.java</file>
+            <file>file:/C:/Users/Richard%20Abousaid/Desktop/mariobros/MarioBros2/src/GUI/InicioSesion.java</file>
+            <file>file:/C:/Users/Richard%20Abousaid/Desktop/mariobros/MarioBros2/src/GUI/Inicio.java</file>
+            <file>file:/C:/Users/Richard%20Abousaid/Desktop/mariobros/MarioBros2/src/GUI/Registrarse.java</file>
+            <file>file:/C:/Users/Richard%20Abousaid/Desktop/mariobros/MarioBros2/src/GUI/AcercaDe.java</file>
+>>>>>>> 6c3d54936478ba0a781e4828accd3ea65835d2fc
         </group>
     </open-files>
 </project-private>
