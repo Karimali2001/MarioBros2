@@ -105,10 +105,11 @@ public class Player extends Entity {
         }
 
         //si no estamos presionando nigun boton sale de la funcion
-        if (!left && !right && !inAir) {
-            return;
-        }
-
+        if(!inAir )
+            if((!left && !right)|| (right &&left))
+                return;
+        
+        
         float xSpeed = 0; //variables temporales para x y y
 
         //para el movimiento del personaje
@@ -182,9 +183,9 @@ public class Player extends Entity {
         updateAnimation(); //actualizar la animacion actual
     }
 
-    public void render(Graphics g) {
+    public void render(Graphics g, int lvlOffset) {
         //getSubimage es para saber la posicion que queremos de la imagen 
-        g.drawImage(miniMarioAnimations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), null); //dibujamos la imagen del personaje en la posicion 0,0
+        g.drawImage(miniMarioAnimations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset)-lvlOffset, (int) (hitbox.y - yDrawOffset), null); //dibujamos la imagen del personaje en la posicion 0,0
     }
 
     //animaciones de movimiento del jugador

@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import levels.LevelManager;
 import main.Game;
 import static main.Game.SCALE;
+import utilz.LoadSave;
 
 /**
  *
@@ -21,6 +22,14 @@ public class Playing extends State implements StateMethods {
     //atributos
     private Player player; //personaje
     private LevelManager levelManager;
+    
+    //para mover el fondo dependiendo de la posicion del jugador
+    private int xLvlOffset; //distancia entre el jugador y el borde
+    private int leftBorder = (int) (0.2*Game.GAME_WIDTH); //borde izquierdo para empezar a mover fondo
+    private int rightBorder = (int) (0.8*Game.GAME_WIDTH); //borde derecho
+    private int lvlTilesWide = LoadSave.getLevelData()[0].length; //ancho del arreglo
+    private int maxTilesOffset = lvlTilesWide -Game.TILES_IN_WIDTH; //variable maxima hasta donde se puede mover el fondo 
+    private int maxLvlOffsetX = maxTilesOffset*Game.TILES_SIZE; //la variable anterior pero en pixeles
 
     //constructor
     public Playing(Game game) {
@@ -51,12 +60,13 @@ public class Playing extends State implements StateMethods {
     public void update() {
         levelManager.update();
         player.update();
+        checkCloseToBorder();
     }
 
     @Override
     public void draw(Graphics g) {
-        levelManager.draw(g);
-        player.render(g);
+        levelManager.draw(g, xLvlOffset);
+        player.render(g,xLvlOffset);
     }
 
     @Override
@@ -112,6 +122,23 @@ public class Playing extends State implements StateMethods {
                 player.setJump(false);
                 break;
         }
+    }
+
+    //funcion que revisa si el jugador esta cerca del borde
+    private void checkCloseToBorder() {
+        int playerX = (int) player.getHitbox().x; //posicion del jugador en x
+        int diff = playerX-xLvlOffset; //para saber si el jugador paso el borde derecho o el izquierdo
+        
+        if(diff >rightBorder)
+            xLvlOffset +=diff-rightBorder;
+        else if(diff<leftBorder)
+            xLvlOffset +=diff-leftBorder;
+        
+        //para revisar que no me pase del maximo mas del borde del juego
+        if(xLvlOffset >maxLvlOffsetX)
+            xLvlOffset = maxLvlOffsetX;
+        else if(xLvlOffset<0)
+            xLvlOffset = 0;
     }
 
 }

@@ -25,7 +25,8 @@ public class LoadSave {
     //atributos
     public static final String MARIO_SPRITES = "res/sprites/sprite_characters.png"; //sprites de mini Mario
     public static final String LEVEL1_SPRITE = "res/levels/outside_sprites.png"; //tiles de piso techo
-    public static final String LEVEL_ONE_DATA = "res/levels/level_one_data.png"; //tile map
+    //public static final String LEVEL_ONE_DATA = "res/levels/level_one_data.png"; //tile map
+    public static final String LEVEL_ONE_DATA = "res/levels/level_one_data_long.png"; //tile map
     public static final String MENU_BUTTONS = "res/menu/button_atlas.png"; 
             
             
@@ -48,8 +49,9 @@ public class LoadSave {
     //donde cada pixel de la imagen es una posicion del nivel
     //el tipo de Tile depende del color
     public static int[][] getLevelData(){
-        int[][] lvlData = new int[Game.TILES_IN_HEIGHT][Game.TILES_IN_WIDTH]; 
+        
         BufferedImage img = getSpriteAtlas(LEVEL_ONE_DATA);
+        int[][] lvlData = new int[img.getHeight()][img.getWidth()]; 
         
         //recorremos el tile map revisando por pixel por pixel
         for(int j=0;j<img.getHeight();j++)
