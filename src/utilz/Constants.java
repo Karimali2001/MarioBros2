@@ -6,11 +6,43 @@
 //clase para guardar constantes  con informacion que sera usadas en las demas clases
 package utilz;
 
+import main.Game;
+
 /**
  *
  * @author karim
  */
 public class Constants {
+    
+    //constantes para enemigos
+    
+    public static class EnemyConstants{
+        public static final int GOOMBA = 0;
+        
+        public static final int MOVING = 0;
+        public static final int DEAD = 1;
+        
+        public static final int GOOMBA_WIDTH_DEFAULT = 72;
+        public static final int GOOMBA_HEIGHT_DEFAULT = 32;
+        
+        public final static int GOOMBA_WIDTH = (int) (GOOMBA_WIDTH_DEFAULT*Game.SCALE);
+        public final static int GOOMBA_HEIGHT = (int) (GOOMBA_HEIGHT_DEFAULT*Game.SCALE);
+        
+        public static int getSpriteAmount(int enemyType, int enemyState){
+            switch(enemyType){
+                case GOOMBA:
+                    switch(enemyState){
+                        case MOVING:
+                            return 2;
+                        case DEAD:
+                            return 1; 
+                    }
+                    
+            }
+            return 0;
+        }
+        
+    }
 
     //direcciones de jugador
     public static class Directions {
