@@ -5,6 +5,8 @@
 package GUI;
 
 import Proyecto.Usuario;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 /**
  *
@@ -12,12 +14,32 @@ import Proyecto.Usuario;
  */
 public class Ayuda extends javax.swing.JFrame {
     private Usuario usuario;
+    private Clip sonido;
+    private Boolean actSonido;
     /**
      * Creates new form Ayuda
      */
-    public Ayuda(Usuario usuario) {
+    public Ayuda(Usuario usuario, Boolean actSonido) {
         this.usuario = usuario;
         initComponents();
+        this.actSonido = actSonido;
+        try {
+                    if (actSonido) {
+			// Se obtiene un Clip de sonido
+			this.sonido = AudioSystem.getClip();
+                        this.actSonido = true;
+
+			// Se carga con un fichero wav
+			this.sonido.open(AudioSystem.getAudioInputStream(getClass().getResource("/IMAGENES/y2mate.com-Super-Mario-Bros-Theme-The-Super-Mario-Bros-Movie-Soundtrack_320kbps_1.wav")));
+
+			// Comienza la reproducción
+			//this.sonido.start();
+                        this.sonido.loop(Clip.LOOP_CONTINUOUSLY);
+
+                    }
+		} catch (Exception e) {
+			System.out.println("" + e);
+		}
     }
 
     /**
@@ -177,7 +199,7 @@ public class Ayuda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Menu newframe=new Menu(usuario);
+        Menu newframe=new Menu(usuario, this.actSonido);
         newframe.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -213,7 +235,7 @@ public class Ayuda extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Ayuda(new Usuario()).setVisible(true);
+                new Ayuda(new Usuario(), true).setVisible(true);
             }
         });
     }

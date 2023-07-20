@@ -15,13 +15,22 @@ public class Usuario {
     public String user;
     public String pass;
     public Integer avatar;
+    // Estadisticas
+    public Integer partidasJugadas;
+    public Integer partidasGanadas;
+    public Integer partidasAbandonadas;
+    public Integer partidasPerdidas;
 
-    public Usuario(String nombre, String correo, String user, String pass, Integer avatar) {
+    public Usuario(String nombre, String correo, String user, String pass, Integer avatar, Integer partidasJugadas, Integer partidasGanadas, Integer partidasAbandonadas, Integer partidasPerdidas) {
         this.nombre = nombre;
         this.correo = correo;
         this.user = user;
         this.pass = pass;
         this.avatar = avatar;
+        this.partidasJugadas = partidasJugadas;
+        this.partidasGanadas = partidasGanadas;
+        this.partidasAbandonadas = partidasAbandonadas;
+        this.partidasPerdidas = partidasPerdidas;
     }
 
     public Usuario() {}
@@ -56,5 +65,45 @@ public class Usuario {
 
     public void setPass(String pass) {
         this.pass = pass;
+    }
+
+    public Integer getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Integer avatar) {
+        this.avatar = avatar;
+    }
+
+    public Integer getPartidasJugadas() {
+        return partidasJugadas;
+    }
+
+    public void setPartidasJugadas(Integer partidasJugadas) {
+        this.partidasJugadas = partidasJugadas;
+    }
+
+    public Integer getPartidasGanadas() {
+        return partidasGanadas;
+    }
+
+    public void setPartidasGanadas(Integer partidasGanadas) {
+        this.partidasGanadas = partidasGanadas;
+    }
+
+    public Integer getPartidasAbandonadas() {
+        return partidasAbandonadas;
+    }
+
+    public void setPartidasAbandonadas(Integer partidasAbandonadas) {
+        this.partidasAbandonadas = partidasAbandonadas;
+    }
+
+    public Integer getPartidasPerdidas() {
+        return partidasPerdidas;
+    }
+
+    public void setPartidasPerdidas(Integer partidasPerdidas) {
+        this.partidasPerdidas = partidasPerdidas;
     }
 }

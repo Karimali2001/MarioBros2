@@ -18,10 +18,12 @@ public class Inicio extends javax.swing.JFrame {
     /**
      * Creates new form Inicio
      */
-    public Inicio() {
+    public Inicio(Boolean actSonido) {
         initComponents();
         // Musica
+        this.actSonido = actSonido;
 		try {
+                    if (actSonido) {
 			// Se obtiene un Clip de sonido
 			this.sonido = AudioSystem.getClip();
                         this.actSonido = true;
@@ -33,7 +35,7 @@ public class Inicio extends javax.swing.JFrame {
 			//this.sonido.start();
                         this.sonido.loop(Clip.LOOP_CONTINUOUSLY);
 
-			// Se cierra el clip.
+                    }
 		} catch (Exception e) {
 			System.out.println("" + e);
 		}
@@ -150,14 +152,14 @@ public class Inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroActionPerformed
-        this.sonido.close();
-        new Registrarse().setVisible(true);
+        if (this.actSonido) this.sonido.close();
+        new Registrarse(this.actSonido).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnRegistroActionPerformed
 
     private void btnInicioSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioSesionActionPerformed
-        this.sonido.close();
-        new InicioSesion().setVisible(true);
+        if (this.actSonido) this.sonido.close();
+        new InicioSesion(this.actSonido).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnInicioSesionActionPerformed
 
@@ -166,8 +168,26 @@ public class Inicio extends javax.swing.JFrame {
            this.sonido.stop();
            this.actSonido = false;
         } else {
-           this.sonido.start();
-           this.actSonido = true;
+           try {
+                if (!this.actSonido) {
+                    // Se obtiene un Clip de sonido
+                    this.sonido = AudioSystem.getClip();
+                    this.actSonido = true;
+
+                    // Se carga con un fichero wav
+                    this.sonido.open(AudioSystem.getAudioInputStream(getClass().getResource("/IMAGENES/y2mate.com-Super-Mario-Bros-Theme-The-Super-Mario-Bros-Movie-Soundtrack_320kbps_1.wav")));
+
+                    // Comienza la reproducción
+                    //this.sonido.start();
+                    this.sonido.loop(Clip.LOOP_CONTINUOUSLY);
+
+                } else {
+                    this.sonido.start();
+                    this.actSonido = true;
+                }
+            } catch (Exception e) {
+                System.out.println("" + e);
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -202,7 +222,7 @@ public class Inicio extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Inicio().setVisible(true);
+                new Inicio(true).setVisible(true);
             }
         });
     }

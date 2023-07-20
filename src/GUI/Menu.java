@@ -17,17 +17,19 @@ import main.Game;
  */
 public class Menu extends javax.swing.JFrame {
     private Usuario usuario;
-     private Clip sonido;
-     private Boolean actSonido;
+    private Clip sonido;
+    private Boolean actSonido;
     /**
      * Creates new form Menu
      * @param usuario
      */
-    public Menu(Usuario usuario) {
+    public Menu(Usuario usuario, Boolean actSonido) {
         this.usuario = usuario;
         initComponents();
         // Musica
+        this.actSonido = actSonido;
 		try {
+                    if (actSonido) {
 			// Se obtiene un Clip de sonido
 			this.sonido = AudioSystem.getClip();
                         this.actSonido = true;
@@ -39,7 +41,7 @@ public class Menu extends javax.swing.JFrame {
 			//this.sonido.start();
                         this.sonido.loop(Clip.LOOP_CONTINUOUSLY);
 
-			// Se cierra el clip.
+                    }
 		} catch (Exception e) {
 			System.out.println("" + e);
 		}
@@ -217,20 +219,24 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        this.sonido.close();
-        Ayuda newframe=new Ayuda(usuario);
-        newframe.setVisible(true);
+        if (this.actSonido) this.sonido.close();
+        new Ayuda(this.usuario, this.actSonido).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       // this.setVisible(false);
-        //new Game();
+
+        if (this.actSonido) this.sonido.close();
+        this.setVisible(false);
+        new Seleccion(this.usuario, this.actSonido).setVisible(true);
+      //  new Game();
+//        this.setVisible(false);
+//        new Game();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.sonido.close();
-        new Inicio().setVisible(true);
+        if (this.actSonido) this.sonido.close();
+        new Inicio(this.actSonido).setVisible(true);
         this.usuario = new Usuario();
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -240,7 +246,8 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        new Estadisticas(this.usuario).setVisible(true);
+        if (this.actSonido) this.sonido.close();
+        new Estadisticas(this.usuario, this.actSonido).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -249,8 +256,26 @@ public class Menu extends javax.swing.JFrame {
            this.sonido.stop();
            this.actSonido = false;
         } else {
-           this.sonido.start();
-           this.actSonido = true;
+            try {
+                if (!this.actSonido) {
+                    // Se obtiene un Clip de sonido
+                    this.sonido = AudioSystem.getClip();
+                    this.actSonido = true;
+
+                    // Se carga con un fichero wav
+                    this.sonido.open(AudioSystem.getAudioInputStream(getClass().getResource("/IMAGENES/y2mate.com-Super-Mario-Bros-Theme-The-Super-Mario-Bros-Movie-Soundtrack_320kbps_1.wav")));
+
+                    // Comienza la reproducción
+                    //this.sonido.start();
+                    this.sonido.loop(Clip.LOOP_CONTINUOUSLY);
+
+                } else {
+                    this.sonido.start();
+                    this.actSonido = true;
+                }
+            } catch (Exception e) {
+                System.out.println("" + e);
+            }
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -261,8 +286,8 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        this.sonido.close();
-        AcercaDe newframe=new AcercaDe(usuario);
+        if (this.actSonido) this.sonido.close();
+        AcercaDe newframe=new AcercaDe(usuario, this.actSonido);
         newframe.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton6ActionPerformed
@@ -297,7 +322,7 @@ public class Menu extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Menu(new Usuario()).setVisible(true);
+                new Menu(new Usuario(), true).setVisible(true);
             }
         });
     }

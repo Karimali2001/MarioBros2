@@ -28,7 +28,7 @@ public class Proyecto {
                 while (scan.hasNextLine()) {
                     String linea = scan.nextLine();
                     String [] data = linea.split(" - ");
-                    lu.agregarUsuario(new Usuario(data[0], data[1], data[2], data[3], Integer.parseInt(data[4])));
+                    lu.agregarUsuario(new Usuario(data[0], data[1], data[2], data[3], Integer.parseInt(data[4]), Integer.parseInt(data[5]), Integer.parseInt(data[6]), Integer.parseInt(data[7]), Integer.parseInt(data[8])));
                 }
                 scan.close();
             }
@@ -43,7 +43,7 @@ public class Proyecto {
         try {
             FileWriter wArchivo = new FileWriter("Usuarios.txt");
             for (Usuario user : lu.usuarios) {
-                String info = user.nombre + " - " + user.correo + " - " + user.user + " - " + user.pass + " - " + user.avatar +"\n";
+                String info = user.nombre + " - " + user.correo + " - " + user.user + " - " + user.pass + " - " + user.avatar + " - " + user.partidasJugadas + " - " + user.partidasGanadas + " - " + user.partidasAbandonadas + " - " + user.partidasPerdidas + "\n";
                 wArchivo.write(info);
             }
             wArchivo.close();
@@ -56,7 +56,7 @@ public class Proyecto {
     
     public static void main(String[] args) {
         leerArchivoUsuarios();
-        new Inicio().setVisible(true);
+        new Inicio(true).setVisible(true);
     }
     
 }

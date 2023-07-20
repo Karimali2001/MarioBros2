@@ -10,6 +10,7 @@ import static Proyecto.Proyecto.lu;
 import Proyecto.Usuario;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,12 +23,14 @@ public class Registrarse extends javax.swing.JFrame {
     /**
      * Creates new form Regsistrarse
      */
-    public Registrarse() {
+    public Registrarse(Boolean actSonido) {
         this.avatar = 1;
         initComponents();
         this.btnAvatar1.setSelected(true);
         // Musica
+        this.actSonido = actSonido;
 		try {
+                    if (actSonido) {
 			// Se obtiene un Clip de sonido
 			this.sonido = AudioSystem.getClip();
                         this.actSonido = true;
@@ -39,7 +42,7 @@ public class Registrarse extends javax.swing.JFrame {
 			//this.sonido.start();
                         this.sonido.loop(Clip.LOOP_CONTINUOUSLY);
 
-			// Se cierra el clip.
+                    }
 		} catch (Exception e) {
 			System.out.println("" + e);
 		}
@@ -272,24 +275,32 @@ public class Registrarse extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.sonido.close();
-        Inicio newframe=new Inicio();
+        if (this.actSonido) this.sonido.close();
+        Inicio newframe=new Inicio(this.actSonido);
         newframe.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        //Obtengo datos para crear el usuario
-        String nombre=tfNombre.getText();
-        String correo=tfCorreo.getText();
-        String usuario=tfUsuario.getText();
-        String clave=tfClave.getText();
-        this.sonido.close();
-        Usuario user1=new Usuario(nombre, correo, usuario, clave, this.avatar);
-        lu.agregarUsuario(user1);
-        Menu newframe=new Menu(user1);
-        newframe.setVisible(true);
-        this.setVisible(false);
+        if (tfNombre.getText().isEmpty() || tfCorreo.getText().isEmpty() || tfUsuario.getText().isEmpty() || tfClave.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Debe llenar todos los campos del formulario!", "Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if (!lu.existeUsuario(tfUsuario.getText())) {
+            //Obtengo datos para crear el usuario
+            String nombre=tfNombre.getText();
+            String correo=tfCorreo.getText();
+            String usuario=tfUsuario.getText();
+            String clave=tfClave.getText();
+            if (this.actSonido) this.sonido.close();
+            Usuario user1=new Usuario(nombre, correo, usuario, clave, this.avatar, 0, 0, 0, 0);
+            lu.agregarUsuario(user1);
+            Menu newframe=new Menu(user1, this.actSonido);
+            newframe.setVisible(true);
+            this.setVisible(false);
+        } else 
+            JOptionPane.showMessageDialog(rootPane, "El nombre de usuario ya existe!", "Error!", JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnAvatar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvatar2ActionPerformed
@@ -326,8 +337,26 @@ public class Registrarse extends javax.swing.JFrame {
            this.sonido.stop();
            this.actSonido = false;
         } else {
-           this.sonido.start();
-           this.actSonido = true;
+           try {
+                if (!this.actSonido) {
+                    // Se obtiene un Clip de sonido
+                    this.sonido = AudioSystem.getClip();
+                    this.actSonido = true;
+
+                    // Se carga con un fichero wav
+                    this.sonido.open(AudioSystem.getAudioInputStream(getClass().getResource("/IMAGENES/y2mate.com-Super-Mario-Bros-Theme-The-Super-Mario-Bros-Movie-Soundtrack_320kbps_1.wav")));
+
+                    // Comienza la reproducción
+                    //this.sonido.start();
+                    this.sonido.loop(Clip.LOOP_CONTINUOUSLY);
+
+                } else {
+                    this.sonido.start();
+                    this.actSonido = true;
+                }
+            } catch (Exception e) {
+                System.out.println("" + e);
+            }
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -362,7 +391,7 @@ public class Registrarse extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Registrarse().setVisible(true);
+                new Registrarse(true).setVisible(true);
             }
         });
     }
