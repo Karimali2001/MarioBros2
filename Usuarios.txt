@@ -1,4 +1,3 @@
-yamal - yamalabousaid - abousaid - 12004399 - 1
-Karim - hjklfdsajkfdsa - Karim - 1234 - 1
-richard - richardabousaid - richi - 12004399 - 2
- -  -  -  - 1
+yamal - yamalabousaid - abousaid - 12004399 - 1 - 0 - 0 - 0 - 0
+Karim - hjklfdsajkfdsa - Karim - 1234 - 1 - 0 - 0 - 0 - 0
+richard - richardabousaid - richi - 12004399 - 2 - 0 - 0 - 0 - 0

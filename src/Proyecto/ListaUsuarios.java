@@ -40,4 +40,12 @@ public class ListaUsuarios {
         
         return -1;
     }    
+    
+    public Boolean existeUsuario(String user) {
+        for (int i = 0; i < this.usuarios.size(); i++)
+            if (this.usuarios.get(i).getUser().equals(user))
+                return true;
+        
+        return false;
+    }
 }
