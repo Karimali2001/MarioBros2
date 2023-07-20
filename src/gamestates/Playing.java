@@ -65,8 +65,9 @@ public class Playing extends State implements StateMethods {
         @Override
     public void update() {
         levelManager.update();
+        
         player.update();
-        enemyManager.update();
+        enemyManager.update(levelManager.getCurrentLevel().getLevelData());
         checkCloseToBorder();
     }
 
@@ -75,6 +76,8 @@ public class Playing extends State implements StateMethods {
         levelManager.draw(g, xLvlOffset);
         player.render(g,xLvlOffset);
         enemyManager.draw(g,xLvlOffset);
+        
+        
     }
 
     @Override
