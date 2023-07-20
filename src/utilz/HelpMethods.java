@@ -34,8 +34,10 @@ public class HelpMethods {
     //revisa si es una pieza y que la posicion este en el gameWindow
     private static boolean isSolid(float x, float y, int[][] lvlData){
         
+        int maxWidth = lvlData[0].length*Game.TILES_SIZE;  //ancho en pixeles
+        
         //si se cumplen testas dos condiciones el personaje esta dentro de la pantalla de juego
-        if(x<0||x>=GAME_WIDTH)
+        if(x<0||x>=maxWidth)
             return true;
         if(y<0||y>=GAME_HEIGHT)
             return true;
