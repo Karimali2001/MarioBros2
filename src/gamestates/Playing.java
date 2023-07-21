@@ -14,6 +14,7 @@ import java.util.Random;
 import levels.LevelManager;
 import main.Game;
 import static main.Game.SCALE;
+import objects.ObjectManager;
 import ui.SoundButton;
 import static utilz.Constants.Enviroment.*;
 import utilz.LoadSave;
@@ -28,6 +29,7 @@ public class Playing extends State implements StateMethods {
     private Player player; //personaje
     private LevelManager levelManager; //manejador de niveles
     private EnemyManager enemyManager; //manejador de enemigos
+    private ObjectManager objectManager;
 
     //para mover el fondo dependiendo de la posicion del jugador
     private int xLvlOffset; //distancia entre el jugador y el borde
@@ -64,12 +66,17 @@ public class Playing extends State implements StateMethods {
     public Player getPlayer() {
         return player;
     }
+    
+    public ObjectManager getObjectManager(){
+        return objectManager;
+    }
     //otros metodos
 
     //metodo iniciador de todas las entidades en el juego
     private void initClasses() {
         levelManager = new LevelManager(game);
         enemyManager = new EnemyManager(this);
+        objectManager = new ObjectManager(this);
 
         player = new Player(200, 200, (int) (64 * SCALE), (int) (40 * SCALE));
 
@@ -84,7 +91,8 @@ public class Playing extends State implements StateMethods {
     @Override
     public void update() {
         levelManager.update();
-
+        objectManager.update();
+        
         player.update();
         enemyManager.update(levelManager.getCurrentLevel().getLevelData());
         checkCloseToBorder();
@@ -99,6 +107,7 @@ public class Playing extends State implements StateMethods {
         levelManager.draw(g, xLvlOffset);
         player.render(g, xLvlOffset);
         enemyManager.draw(g, xLvlOffset);
+        objectManager.draw(g, xLvlOffset);
         botonSonido.draw(g);
 
     }
