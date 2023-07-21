@@ -39,6 +39,10 @@ public class LoadSave {
     public static final String TINY_CLOUD = "res/levels/tiny_cloud2.png"; 
     public static final String EVIL_MOUNTAINS = "res/levels/big_mountains2.png";  
     public static final String SAD_CLOUD = "res/levels/sad_cloud.png"; 
+        public static final String SOUND_BUTTONS = "res/menu/sound_button.png";
+
+    
+    
             
             
     //otros metodos        

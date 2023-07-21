@@ -14,6 +14,7 @@ import java.util.Random;
 import levels.LevelManager;
 import main.Game;
 import static main.Game.SCALE;
+import ui.SoundButton;
 import static utilz.Constants.Enviroment.*;
 import utilz.LoadSave;
 
@@ -40,6 +41,10 @@ public class Playing extends State implements StateMethods {
     private BufferedImage backgroundImg, bigMountain, tinyCloud;
     private int[] smallCloudsPos;
     private Random rnd = new Random();
+
+    //para botones UI
+    private boolean paused = true;
+    private SoundButton botonSonido = new SoundButton(0, 0, 50, 50, "src/IMAGENES/y2mate.com-Super-Mario-Bros-Theme-The-Super-Mario-Bros-Movie-Soundtrack_320kbps_1.wav");
 
     //constructor
     public Playing(Game game) {
@@ -94,12 +99,16 @@ public class Playing extends State implements StateMethods {
         levelManager.draw(g, xLvlOffset);
         player.render(g, xLvlOffset);
         enemyManager.draw(g, xLvlOffset);
+        botonSonido.draw(g);
 
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        if (e.getX() < 50 && e.getY() < 50) {
+            System.out.println("Apagar musica");
+            botonSonido.clic();
+        }
     }
 
     @Override
