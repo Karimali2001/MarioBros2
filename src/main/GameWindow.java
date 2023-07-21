@@ -6,11 +6,14 @@ package main;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import javax.swing.JFrame;
 import static main.Game.GAME_HEIGHT;
 import static main.Game.GAME_WIDTH;
+import static utilz.Constants.ObjectConstants.BIG_MUSHROOM;
+import static utilz.Constants.ObjectConstants.MISTERY_BOX;
 
 
 /**
@@ -35,6 +38,14 @@ public class GameWindow {
         jframe.setResizable(false); //para que no se puede modificar la pantalla de jframe
         jframe.pack();//le digo a jframe que se ajuste al tamanio de sus componentes
         jframe.setVisible(true); //defino que la pantalla sea visible
+        
+        jframe.addWindowListener(new WindowAdapter(){
+            @Override 
+            public void windowClosing(WindowEvent e){
+                System.out.println("A is closing");
+            }
+            
+        });
         jframe.addWindowFocusListener(new WindowFocusListener(){
             @Override
             public void windowGainedFocus(WindowEvent e) {
@@ -47,6 +58,7 @@ public class GameWindow {
             }
             
         });
+        
 
     }
 }

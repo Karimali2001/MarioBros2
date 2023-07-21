@@ -2,8 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-//SE BORRARA AL FINAL
-//clase main donde se instancia solamente el juego
+//clase para jugar si tener que iniciar sesion
+//para desarrollador
 package main;
 
 /**

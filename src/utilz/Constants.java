@@ -13,9 +13,44 @@ import main.Game;
  * @author karim
  */
 public class Constants {
+    //constantes para el fondo del juego
+        public static class Enviroment {
+        public static final int BIG_MOUNTAINS_WIDTH_DEFAULT = 300;
+        public static final int BIG_MOUNTAINS_HEIGHT_DEFAULT = 150;
+        public static final int TINY_CLOUD_WIDTH_DEFAULT = 74;
+        public static final int TINY_CLOUD_HEIGHT_DEFAULT = 60;
+        
+        public static final int BIG_MOUNTAINS_WIDTH = (int)(BIG_MOUNTAINS_WIDTH_DEFAULT * Game.SCALE);
+        public static final int BIG_MOUNTAINS_HEIGHT = (int)(BIG_MOUNTAINS_HEIGHT_DEFAULT * Game.SCALE);
+        public static final int TINY_CLOUD_WIDTH = (int)(TINY_CLOUD_WIDTH_DEFAULT * Game.SCALE);
+        public static final int TINY_CLOUD_HEIGHT = (int)(TINY_CLOUD_HEIGHT_DEFAULT * Game.SCALE);
+    
+    }
+    
+    
+    //constantes para objetos del juego
+    public static class ObjectConstants {
+        public static final int BIG_MUSHROOM = 0;
+        public static final int MISTERY_BOX = 1;
+        
+        public static final int CONTAINER_WIDTH_DEFAULT = 46;
+        public static final int CONTAINER_HEIGHT_DEFAULT = 44;
+        public static final int CONTAINER_WIDTH = (int) (Game.SCALE*CONTAINER_WIDTH_DEFAULT);
+        public static final int CONTAINER_HEIGHT = (int) (Game.SCALE*CONTAINER_HEIGHT_DEFAULT);
+        
+        public static int getSpriteAmount(int objectType){
+            switch(objectType){
+                case MISTERY_BOX:
+                case BIG_MUSHROOM:
+                    return 0;
+            }
+            return 0;
+        }
+        
+    }
+    
     
     //constantes para enemigos
-    
     public static class EnemyConstants{
         public static final int GOOMBA = 0;
         

@@ -18,17 +18,16 @@ import static utilz.Constants.Directions.*;
 public abstract class Enemy extends Entity {
 
     //atributos
-    private int aniIndex;//para saber cual animacion usar
-    private int enemyState; //para saber si el enemigo se esta moviendo o esta muerto o etc
-    private int enemyType; //que tipo de enemigo es
-    private int aniTick, aniSpeed = 35; //velocidad de animacion
-    private boolean firstUpdate = true; //bandera para saber si es la primera actualizacion de juego
-    private boolean inAir; //para saber si esta en el aire
-    private float fallSpeed; //velocidad de caida
-    private float gravity = 0.04f * Game.SCALE; //gravedad
-    private float walkSpeed = 0.25f *Game.SCALE; //velocidad de caminar
-    private int walkDir = LEFT;
-    
+    protected int aniIndex;//para saber cual animacion usar
+    protected int enemyState; //para saber si el enemigo se esta moviendo o esta muerto o etc
+    protected int enemyType; //que tipo de enemigo es
+    protected int aniTick, aniSpeed = 35; //velocidad de animacion
+    protected boolean firstUpdate = true; //bandera para saber si es la primera actualizacion de juego
+    protected boolean inAir; //para saber si esta en el aire
+    protected float fallSpeed; //velocidad de caida
+    protected float gravity = 0.04f * Game.SCALE; //gravedad
+    protected float walkSpeed = 0.25f * Game.SCALE; //velocidad de caminar
+    protected int walkDir = LEFT;
 
     //constructor
     public Enemy(float x, float y, int width, int height, int enemyType) {
@@ -48,7 +47,7 @@ public abstract class Enemy extends Entity {
     }
 
     //otros metodos
-    private void updateAnimationTick() {
+    protected void updateAnimationTick() {
         aniTick++;
         if (aniTick >= aniSpeed) {
             aniTick = 0;
@@ -59,35 +58,36 @@ public abstract class Enemy extends Entity {
         }
     }
 
-    public void update(int[][] lvlData) {
-        updateMove(lvlData);
-        updateAnimationTick();
+    //revisa si al aparecer el enemigo, aparece en el aire y lo coloca en tierra
+    protected void firstUpdateCheck(int[][] lvlData) {
+        if (!isEntityOnFloor(hitbox, lvlData)) //no esta en el aire
+        {
+            inAir = true;
+        }
+        firstUpdate = false;
     }
 
-    //para que el enemigo caiga en el suelo si empieza o se cae en un borde
-    private void updateMove(int[][] lvlData) {
-        if (firstUpdate) {
-            if (!isEntityOnFloor(hitbox, lvlData)) //no esta en el aire
-            {
-                inAir = true;
-            }
-            firstUpdate = false;
+    //cambio direccion en x de enemigo si es izquierda cambia a derecha y viceversa
+    protected void changeWalkDir() {
+        if (walkDir == LEFT) {
+            walkDir = RIGHT;
+        } else {
+            walkDir = LEFT;
         }
-
-        if (inAir) {
+    }
+    
+    protected void updateInAir(int[][] lvlData){
             //estamos en el aire
             if (canMoveHere(hitbox.x, hitbox.y + fallSpeed, hitbox.width, hitbox.height, lvlData)) {
                 hitbox.y += fallSpeed;
                 fallSpeed += gravity;
             }else{
                inAir = false;
-               hitbox.y = getEntityYPosUnderRoofOrAboveFloor(hitbox,fallSpeed);
-            }
-                
-        } else {
-            //camine de izquierda a derecha
-            switch(enemyState){
-                case MOVING:
+               hitbox.y = getEntityYPosUnderRoofOrAboveFloor(hitbox,fallSpeed);    
+        } 
+    }
+    
+    protected void move(int[][] lvlData){
                     float xSpeed = 0;
                     
                     if(walkDir == LEFT)
@@ -105,20 +105,12 @@ public abstract class Enemy extends Entity {
                     }
                     
                     changeWalkDir();
-                    
-                    break;
-                case DEAD:
-                    enemyState = DEAD;
-                break;
-            }
-        }
     }
 
-    //cambio direccion en x de enemigo si es izquierda cambia a derecha y viceversa
-    private void changeWalkDir() {
-        if(walkDir == LEFT)
-            walkDir = RIGHT;
-        else
-            walkDir = LEFT;
+//para el cambio de estado de enemigo
+    protected void newState(int enemyState){
+        this.enemyState = enemyState;
+        aniTick = 0;
+        aniIndex = 0;
     }
 }
