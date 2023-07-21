@@ -4,6 +4,8 @@
  */
 package entities;
 
+import java.awt.Graphics;
+import main.Game;
 import static utilz.Constants.EnemyConstants.*;
 
 /**
@@ -16,10 +18,16 @@ public class Goomba extends Enemy{
     //constructor
     public Goomba(float x, float y) {
         super(x, y, GOOMBA_WIDTH, GOOMBA_HEIGHT, GOOMBA);
+        initHitbox(x,y,(int)(Game.SCALE*30),(int) (Game.SCALE*27));
     }
     
     //set/get
     
     //otros metodos
+    
+   //para dibujar el hitbox
+    public void render(Graphics g, int lvlOffset){
+        drawHitbox(g,lvlOffset);
+    }
     
 }

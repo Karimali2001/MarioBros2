@@ -98,4 +98,8 @@ public class HelpMethods {
         return true;
     }
    
+    //para saber si la entidad esta en el piso 
+    public static boolean isFloor(Rectangle2D.Float hitbox,float xSpeed,int[][] lvlData){
+        return isSolid(hitbox.x+xSpeed,hitbox.y+hitbox.height+1,lvlData);
+    }
 }

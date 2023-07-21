@@ -229,9 +229,14 @@ public class Menu extends javax.swing.JFrame {
         if (this.actSonido) this.sonido.close();
         this.setVisible(false);
         new Seleccion(this.usuario, this.actSonido).setVisible(true);
+      //  new Game();
+//        this.setVisible(false);
 //        new Game();
+<<<<<<< HEAD
        // this.setVisible(false);
         //new Game();
+=======
+>>>>>>> eee0a054387a5876fad486205af3aa88010d4c47
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

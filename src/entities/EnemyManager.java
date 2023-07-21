@@ -33,13 +33,16 @@ public class EnemyManager {
     //set/get
     //otros metodso
     
-    public void update(){
+    public void update(int[][] lvlData){
         for(Goomba goomba: goombas)
-            goomba.update();
+            goomba.update(lvlData);
     }
     
     public void draw(Graphics g, int xLvlOffset){
         drawGoombas(g,xLvlOffset);
+        //para dibujar hitbox
+//        for(Goomba goomba: goombas)
+//            goomba.drawHitbox(g, xLvlOffset);
     }
 
     private void loadEnemyImgs() {
@@ -57,8 +60,9 @@ public class EnemyManager {
     }
 
     private void drawGoombas(Graphics g, int xLvlOffset) {
-        for(Goomba goomba: goombas)
+        for(Goomba goomba: goombas){
             g.drawImage(goombaArray[goomba.getEnemyState()][goomba.getAniIndex()], (int) goomba.getHitbox().x-xLvlOffset,(int) goomba.getHitbox().y, GOOMBA_WIDTH, GOOMBA_HEIGHT,null );
+        }
             
     }
 

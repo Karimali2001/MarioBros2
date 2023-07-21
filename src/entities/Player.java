@@ -184,8 +184,9 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g, int lvlOffset) {
-        //getSubimage es para saber la posicion que queremos de la imagen 
+   
         g.drawImage(miniMarioAnimations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset)-lvlOffset, (int) (hitbox.y - yDrawOffset), null); //dibujamos la imagen del personaje en la posicion 0,0
+
     }
 
     //animaciones de movimiento del jugador
@@ -264,4 +265,5 @@ public class Player extends Entity {
         inAir = true;
         airSpeed = jumpSpeed;
     }
+    
 }

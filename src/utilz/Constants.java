@@ -28,6 +28,10 @@ public class Constants {
         public final static int GOOMBA_WIDTH = (int) (GOOMBA_WIDTH_DEFAULT*Game.SCALE*0.7);
         public final static int GOOMBA_HEIGHT = (int) (GOOMBA_HEIGHT_DEFAULT*Game.SCALE*0.7);
         
+        //distancias entre el comienzo del sprite hasta el hitbox
+        public static final int GOOMBA_DRAWOFFSET_X = (int) (17*Game.SCALE); 
+        public static final int GOOMBA_DRAWOFFSET_Y = (int) (13*Game.SCALE);
+        
         public static int getSpriteAmount(int enemyType, int enemyState){
             switch(enemyType){
                 case GOOMBA:
