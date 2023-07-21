@@ -4,6 +4,7 @@
  */
 package objects;
 
+import main.Game;
 import static utilz.Constants.ObjectConstants.MISTERY_BOX;
 
 
@@ -28,9 +29,18 @@ public class GameContainer extends GameObject{
     private void createHitbox() {
         if(objType == MISTERY_BOX){
                 initHitbox(34,34);
+                
+                xDrawOffset = (int) (Game.SCALE);
+                yDrawOffset = (int) (Game.SCALE);
+                
         }else{
             
         }
+    }
+    
+    public void update(){
+        if(doAnimation)
+            updateAnimationTick();
     }
     
 }
