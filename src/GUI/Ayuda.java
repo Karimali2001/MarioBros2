@@ -199,6 +199,7 @@ public class Ayuda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (this.actSonido) this.sonido.close();
         Menu newframe=new Menu(usuario, this.actSonido);
         newframe.setVisible(true);
         this.setVisible(false);
