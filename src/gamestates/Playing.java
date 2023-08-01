@@ -78,7 +78,7 @@ public class Playing extends State implements StateMethods {
         enemyManager = new EnemyManager(this);
         objectManager = new ObjectManager(this);
 
-        player = new Player(200, 200, (int) (64 * SCALE), (int) (40 * SCALE));
+        player = new Player(200, 200, (int) (85 * SCALE), (int) (65 * SCALE));
 
         player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
     }

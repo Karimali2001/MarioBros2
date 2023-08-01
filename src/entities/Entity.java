@@ -46,13 +46,13 @@ public abstract class Entity {
     }
     
     protected void initHitbox(float x, float y,int width,int height) {
-        hitbox = new Rectangle2D.Float( x, y,width,height);
+        hitbox = new Rectangle2D.Float(10+x, 2+y,width,height);
     }
     
-//    //recibe la nueva posicion entidad (x,y) y actualiza el cuadro de colisiones
-//    protected void updateHitbox(){
-//        hitbox.x = (int) x;
-//        hitbox.y = (int) y;
-//    }
+    //recibe la nueva posicion entidad (x,y) y actualiza el cuadro de colisiones
+    protected void updateHitbox(){
+        hitbox.x = (int) x;
+        hitbox.y = (int) y;
+    }
     
 }

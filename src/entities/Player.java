@@ -54,7 +54,7 @@ public class Player extends Entity {
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadAnimations();
-        initHitbox(x, y, (int)(20 * Game.SCALE), (int) (21 * Game.SCALE)); //inicializo el hitbox aqui decido de que tamanio va a ser desde donde esto leyendo el sprite
+        initHitbox(x, y, (int)(16* Game.SCALE), (int) (27 * Game.SCALE)); //inicializo el hitbox aqui decido de que tamanio va a ser desde donde esto leyendo el sprite
 
     }
 
@@ -181,12 +181,13 @@ public class Player extends Entity {
         updateAnimationTick(); //actualizar animacion de personaje
 
         updateAnimation(); //actualizar la animacion actual
+        
     }
 
     public void render(Graphics g, int lvlOffset) {
    
-        g.drawImage(miniMarioAnimations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset)-lvlOffset, (int) (hitbox.y - yDrawOffset), null); //dibujamos la imagen del personaje en la posicion 0,0
-
+        g.drawImage(miniMarioAnimations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset)-lvlOffset, (int) (hitbox.y - yDrawOffset),3*16,3*16, null); //dibujamos la imagen del personaje en la posicion 0,0
+        //this.drawHitbox(g, lvlOffset);
     }
 
     //animaciones de movimiento del jugador
@@ -196,19 +197,22 @@ public class Player extends Entity {
         //cant filas= cantidad de tipos de animaciones
         //cant columnas = cantidad de imagenes del tipo de imaginacion
         miniMarioAnimations = new BufferedImage[6][10];
+        
+        int width = 16, height = 16; //ancho y largo de sprites
 
         //cargando imagenes
         //cargo las animaciones en otro arreglo de animaciones de mini mario
         //cargo mario parado hacia la derecha
-        miniMarioAnimations[Constants.PlayerConstants.RIGHT][0] = img.getSubimage(422, 793, 63, 36);
+        miniMarioAnimations[Constants.PlayerConstants.RIGHT][0] = img.getSubimage(45, 10, width, height);
 
         //cargo mario corriendo hacia la derecha
-        for (int i = 0; i < Constants.PlayerConstants.getSpriteLength(Constants.PlayerConstants.RUNRIGHT); i++) {
-            miniMarioAnimations[Constants.PlayerConstants.RUNRIGHT][i] = img.getSubimage((i * 63) + 485, 793, 63, 36);
-        }
+        miniMarioAnimations[Constants.PlayerConstants.RUNRIGHT][0] = img.getSubimage(82, 9, width, height);
+        miniMarioAnimations[Constants.PlayerConstants.RUNRIGHT][1] = img.getSubimage(115, 9, width, height);
+        miniMarioAnimations[Constants.PlayerConstants.RUNRIGHT][2] = img.getSubimage(152, 10, width, height);
+
 
         //cargo mario salto a la derecha
-        miniMarioAnimations[Constants.PlayerConstants.JUMP][0] = img.getSubimage(725, 793, 63, 36);
+        miniMarioAnimations[Constants.PlayerConstants.JUMP][0] = img.getSubimage(360, 36, width, height);
     }
 
     public void loadLvlData(int[][] lvlData) {
