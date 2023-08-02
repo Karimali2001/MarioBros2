@@ -53,9 +53,9 @@ public class Playing extends State implements StateMethods {
         super(game);
         initClasses();
 
-        backgroundImg = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BG_2);
+        backgroundImg = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BG_1);
         bigMountain = LoadSave.getSpriteAtlas(LoadSave.BIG_MOUNTAINS);
-        tinyCloud = LoadSave.getSpriteAtlas(LoadSave.SAD_CLOUD);
+        tinyCloud = LoadSave.getSpriteAtlas(LoadSave.TINY_CLOUD);
         smallCloudsPos = new int[8];
         for (int i = 0; i < smallCloudsPos.length; i++) {
             smallCloudsPos[i] = (int) (70 * Game.SCALE) + rnd.nextInt((int) (150 * Game.SCALE));
@@ -192,7 +192,7 @@ public class Playing extends State implements StateMethods {
     //para dibujar fondo
     private void drawElements(Graphics g) {
         for (int i = 0; i < 7; i++) {
-            g.drawImage(bigMountain, i * BIG_MOUNTAINS_WIDTH - (int) (xLvlOffset * 0.3), (int) (204 * Game.SCALE), BIG_MOUNTAINS_WIDTH, BIG_MOUNTAINS_HEIGHT, null);
+            g.drawImage(bigMountain, i * BIG_MOUNTAINS_WIDTH - (int) (xLvlOffset * 0.3), (int) (250 * Game.SCALE), BIG_MOUNTAINS_WIDTH, BIG_MOUNTAINS_HEIGHT, null);
         }
         for (int i = 0; i < smallCloudsPos.length; i++) {
             g.drawImage(tinyCloud, TINY_CLOUD_WIDTH * 3 * i - (int) (xLvlOffset * 0.7), smallCloudsPos[i], TINY_CLOUD_WIDTH, TINY_CLOUD_HEIGHT, null);

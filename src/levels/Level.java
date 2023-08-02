@@ -12,7 +12,7 @@ package levels;
  */
 public class Level {
     //atributos
-    private int[][] lvlData;
+    private int[][] lvlData; //arreglo que guarda los valores de una de las componentes del mapa de tiles para saber pieza o entidad va en ese lugar
     
     //constructor
     public Level(int[][] lvlData) {
