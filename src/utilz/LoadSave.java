@@ -40,8 +40,11 @@ public class LoadSave {
     public static final String BIG_MOUNTAINS = "res/levels/big_mountains2.png";  
     public static final String TINY_CLOUD = "res/levels/tiny_cloud2.png"; 
     public static final String EVIL_MOUNTAINS = "res/levels/big_mountains2.png";  
-    public static final String SAD_CLOUD = "res/levels/sad_cloud.png"; 
+    public static final String SAD_CLOUD = "res/levels/sad_cloud.png";
+    public static final String PAUSE_BACKGROUND = "res/menu/pause_menu.png";
     public static final String SOUND_BUTTONS = "res/menu/sound_button.png";
+    public static final String URM_BUTTONS = "res/menu/urm_buttons.png";
+    public static final String VOLUME_BUTTONS = "res/menu/volume_buttons.png";
 
     
     

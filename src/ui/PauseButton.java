@@ -8,26 +8,25 @@ package ui;
 import java.awt.Rectangle;
 
 /**
- *
+ *SUPER CLASE DE TODAS LAS CLASES DE BOTONES EN EL MENU DE PAUSA
  * @author Andrés
  */
 public class PauseButton {
-    protected int x,y,width,heigth;
+    //atributos
+    protected int x,y,width,height; //medidas
     protected Rectangle bounds;
 
+    //constructores
     public PauseButton(int x, int y, int width, int heigth) {
         this.x = x;
         this.y = y;
         this.width = width;
-        this.heigth = heigth;
+        this.height = heigth;
         createBounds();
     }
-
-    private void createBounds() {
-        bounds = new Rectangle(x,y,width,heigth);
-    }
-
-    public int getX() {
+    
+    //set/get
+        public int getX() {
         return x;
     }
 
@@ -51,12 +50,12 @@ public class PauseButton {
         this.width = width;
     }
 
-    public int getHeigth() {
-        return heigth;
+    public int getHeight() {
+        return height;
     }
 
-    public void setHeigth(int heigth) {
-        this.heigth = heigth;
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     public Rectangle getBounds() {
@@ -65,7 +64,14 @@ public class PauseButton {
 
     public void setBounds(Rectangle bounds) {
         this.bounds = bounds;
+    } 
+
+    //otros metodos
+    private void createBounds() {
+        bounds = new Rectangle(x,y,width,height);
     }
+
+
     
     
 

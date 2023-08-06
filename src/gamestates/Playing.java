@@ -15,6 +15,7 @@ import levels.LevelManager;
 import main.Game;
 import static main.Game.SCALE;
 import objects.ObjectManager;
+import ui.PauseOverlay;
 import ui.SoundButton;
 import static utilz.Constants.Enviroment.*;
 import utilz.LoadSave;
@@ -29,7 +30,8 @@ public class Playing extends State implements StateMethods {
     private Player player; //personaje
     private LevelManager levelManager; //manejador de niveles
     private EnemyManager enemyManager; //manejador de enemigos
-    private ObjectManager objectManager;
+    private ObjectManager objectManager; //manejador de objetos
+    private PauseOverlay pauseOverlay;
 
     //para mover el fondo dependiendo de la posicion del jugador
     private int xLvlOffset; //distancia entre el jugador y el borde
@@ -45,8 +47,8 @@ public class Playing extends State implements StateMethods {
     private Random rnd = new Random();
 
     //para botones UI
-    private boolean paused = true;
-    private SoundButton botonSonido = new SoundButton(0, 0, 50, 50, "src/IMAGENES/y2mate.com-Super-Mario-Bros-Theme-The-Super-Mario-Bros-Movie-Soundtrack_320kbps_1.wav");
+    private boolean paused = false; //bandera para mostrar o no el menu de pausa
+    //private SoundButton botonSonido = new SoundButton(0, 0, 50, 50, "src/IMAGENES/y2mate.com-Super-Mario-Bros-Theme-The-Super-Mario-Bros-Movie-Soundtrack_320kbps_1.wav");
 
     //constructor
     public Playing(Game game) {
@@ -66,8 +68,8 @@ public class Playing extends State implements StateMethods {
     public Player getPlayer() {
         return player;
     }
-    
-    public ObjectManager getObjectManager(){
+
+    public ObjectManager getObjectManager() {
         return objectManager;
     }
     //otros metodos
@@ -81,6 +83,8 @@ public class Playing extends State implements StateMethods {
         player = new Player(200, 200, (int) (85 * SCALE), (int) (65 * SCALE));
 
         player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
+
+        pauseOverlay = new PauseOverlay(this);
     }
 
     //para el movimiento del personaje cuando el jugador se mete en otra ventana
@@ -90,12 +94,24 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void update() {
-        levelManager.update();
-        objectManager.update();
+        if (!paused) {
+            
+            levelManager.update();
+            
+            objectManager.update();
+
+            player.update();
+            
+            enemyManager.update(levelManager.getCurrentLevel().getLevelData());
+            
+            checkCloseToBorder();
+        } else {
+            pauseOverlay.update();
+        }
+
+
+
         
-        player.update();
-        enemyManager.update(levelManager.getCurrentLevel().getLevelData());
-        checkCloseToBorder();
     }
 
     @Override
@@ -108,31 +124,40 @@ public class Playing extends State implements StateMethods {
         player.render(g, xLvlOffset);
         enemyManager.draw(g, xLvlOffset);
         objectManager.draw(g, xLvlOffset);
-        botonSonido.draw(g);
+        if (paused) {
+            pauseOverlay.draw(g);
+        }
 
+        //botonSonido.draw(g);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getX() < 50 && e.getY() < 50) {
-            System.out.println("Apagar musica");
-            botonSonido.clic();
+//        if (e.getX() < 50 && e.getY() < 50) {
+//            System.out.println("Apagar musica");
+//            botonSonido.clic();
+//        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if (paused) {
+            pauseOverlay.mousePressed(e);
         }
     }
 
     @Override
-    public void mosePressed(MouseEvent e) {
-
-    }
-
-    @Override
     public void mouseReleased(MouseEvent e) {
-
+        if (paused) {
+            pauseOverlay.mouseReleased(e);
+        }
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        if (paused) {
+            pauseOverlay.mouseMoved(e);
+        }
     }
 
     @Override
@@ -149,8 +174,8 @@ public class Playing extends State implements StateMethods {
             case KeyEvent.VK_SPACE:
                 player.setJump(true);
                 break;
-            case KeyEvent.VK_BACK_SPACE:
-                Gamestate.state = Gamestate.MENU;
+            case KeyEvent.VK_ESCAPE:
+                paused = !paused;
                 break;
         }
     }
@@ -199,4 +224,13 @@ public class Playing extends State implements StateMethods {
         }
     }
 
+    public void unpauseGame() {
+        paused = false;
+    }
+
+    public void mouseDragged(MouseEvent e){
+        if(paused){
+            pauseOverlay.mouseDragged(e);
+        }
+    }
 }
