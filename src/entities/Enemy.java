@@ -4,6 +4,7 @@
  */
 package entities;
 
+import java.awt.geom.Rectangle2D;
 import main.Game;
 import static utilz.Constants.EnemyConstants.*;
 import static utilz.Constants.EnemyConstants.getSpriteAmount;
@@ -21,19 +22,28 @@ public abstract class Enemy extends Entity {
     protected int aniIndex;//para saber cual animacion usar
     protected int enemyState; //para saber si el enemigo se esta moviendo o esta muerto o etc
     protected int enemyType; //que tipo de enemigo es
-    protected int aniTick, aniSpeed = 35; //velocidad de animacion
+    protected int aniTick, aniSpeed = 25; //velocidad de animacion
     protected boolean firstUpdate = true; //bandera para saber si es la primera actualizacion de juego
     protected boolean inAir; //para saber si esta en el aire
     protected float fallSpeed; //velocidad de caida
     protected float gravity = 0.04f * Game.SCALE; //gravedad
     protected float walkSpeed = 0.25f * Game.SCALE; //velocidad de caminar
-    protected int walkDir = LEFT;
+    protected int walkDir = LEFT; //direccion 
+    protected int maxHealth; //maxima vida
+    protected int currentHealth; //vida actual
+    protected boolean active = true; //enemigo activo
+    protected boolean attackChecked;
+    
 
     //constructor
     public Enemy(float x, float y, int width, int height, int enemyType) {
         super(x, y, width, height);
         this.enemyType = enemyType;
         initHitbox(x, y, width, height);
+        
+        //vida del enemigo
+        maxHealth = getMaxHealth(enemyType);
+        currentHealth = maxHealth;
 
     }
 
@@ -45,6 +55,10 @@ public abstract class Enemy extends Entity {
     public int getEnemyState() {
         return enemyState;
     }
+    
+    public boolean isActive(){
+        return active;
+    }
 
     //otros metodos
     protected void updateAnimationTick() {
@@ -54,6 +68,8 @@ public abstract class Enemy extends Entity {
             aniIndex++;
             if (aniIndex >= getSpriteAmount(enemyType, enemyState)) {
                 aniIndex = 0;
+                if(enemyState == DEAD)
+                    active = false;
             }
         }
     }
@@ -113,4 +129,48 @@ public abstract class Enemy extends Entity {
         aniTick = 0;
         aniIndex = 0;
     }
+    
+    
+    //si el jugador le hace danio al enemigo
+    public void hurt(int amount, Player player){
+        
+        currentHealth -= amount;
+        
+        //para que salte
+        player.setInAir(false);
+        player.jump();
+        
+        if(currentHealth <=0){
+            newState(DEAD);
+            //active = false;
+        }
+
+        
+    }
+    
+ 
+    
+    public void resetEnemy() {
+        
+        firstUpdate = true;
+        currentHealth = maxHealth;
+        newState(MOVING);
+        active = true;
+        fallSpeed = 0;
+        
+        //posicion
+        hitbox.x = x;
+        hitbox.y = y;
+    }
+    
+    protected void checkEnemyHit(Rectangle2D.Float attackBox, Player player) {
+        if(attackBox.intersects(player.hitbox)){
+            if(!player.isInAir())
+                player.changeHealth(-1);
+            attackChecked = true;
+        }
+    }
+    
 }
+
+

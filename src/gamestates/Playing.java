@@ -6,15 +6,18 @@ package gamestates;
 
 import entities.EnemyManager;
 import entities.Player;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import levels.LevelManager;
 import main.Game;
 import static main.Game.SCALE;
 import objects.ObjectManager;
+import ui.GameOverOverlay;
 import ui.PauseOverlay;
 import ui.SoundButton;
 import static utilz.Constants.Enviroment.*;
@@ -32,6 +35,7 @@ public class Playing extends State implements StateMethods {
     private EnemyManager enemyManager; //manejador de enemigos
     private ObjectManager objectManager; //manejador de objetos
     private PauseOverlay pauseOverlay;
+    private GameOverOverlay gameOverOverlay;
 
     //para mover el fondo dependiendo de la posicion del jugador
     private int xLvlOffset; //distancia entre el jugador y el borde
@@ -50,6 +54,9 @@ public class Playing extends State implements StateMethods {
     private boolean paused = false; //bandera para mostrar o no el menu de pausa
     //private SoundButton botonSonido = new SoundButton(0, 0, 50, 50, "src/IMAGENES/y2mate.com-Super-Mario-Bros-Theme-The-Super-Mario-Bros-Movie-Soundtrack_320kbps_1.wav");
 
+    //para cuando el jugador pierde
+    private boolean gameOver;
+
     //constructor
     public Playing(Game game) {
         super(game);
@@ -60,7 +67,7 @@ public class Playing extends State implements StateMethods {
         tinyCloud = LoadSave.getSpriteAtlas(LoadSave.TINY_CLOUD);
         smallCloudsPos = new int[8];
         for (int i = 0; i < smallCloudsPos.length; i++) {
-            smallCloudsPos[i] = (int) (70 * Game.SCALE) + rnd.nextInt((int) (150 * Game.SCALE));
+            smallCloudsPos[i] = (int) (70 * Game.SCALE) + rnd.nextInt((int) (50 * Game.SCALE));
         }
     }
 
@@ -72,6 +79,10 @@ public class Playing extends State implements StateMethods {
     public ObjectManager getObjectManager() {
         return objectManager;
     }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
     //otros metodos
 
     //metodo iniciador de todas las entidades en el juego
@@ -80,11 +91,13 @@ public class Playing extends State implements StateMethods {
         enemyManager = new EnemyManager(this);
         objectManager = new ObjectManager(this);
 
-        player = new Player(200, 200, (int) (85 * SCALE), (int) (65 * SCALE));
+        player = new Player(200, 200, (int) (2 * 16 * SCALE), (int) (2 * 16 * SCALE), this);
 
         player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
 
         pauseOverlay = new PauseOverlay(this);
+
+        gameOverOverlay = new GameOverOverlay(this);
     }
 
     //para el movimiento del personaje cuando el jugador se mete en otra ventana
@@ -94,24 +107,21 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void update() {
-        if (!paused) {
-            
+        if (!paused && !gameOver) {
+
             levelManager.update();
-            
+
             objectManager.update();
 
             player.update();
-            
-            enemyManager.update(levelManager.getCurrentLevel().getLevelData());
-            
+
+            enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
+
             checkCloseToBorder();
         } else {
             pauseOverlay.update();
         }
 
-
-
-        
     }
 
     @Override
@@ -125,7 +135,11 @@ public class Playing extends State implements StateMethods {
         enemyManager.draw(g, xLvlOffset);
         objectManager.draw(g, xLvlOffset);
         if (paused) {
+            g.setColor(new Color(0, 0, 0, 150));
+            g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
             pauseOverlay.draw(g);
+        } else if (gameOver) {
+            gameOverOverlay.draw(g);
         }
 
         //botonSonido.draw(g);
@@ -133,6 +147,9 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        if(!gameOver){
+            
+        }
 //        if (e.getX() < 50 && e.getY() < 50) {
 //            System.out.println("Apagar musica");
 //            botonSonido.clic();
@@ -141,6 +158,7 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if(!gameOver)
         if (paused) {
             pauseOverlay.mousePressed(e);
         }
@@ -148,6 +166,7 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        if(!gameOver)
         if (paused) {
             pauseOverlay.mouseReleased(e);
         }
@@ -155,6 +174,7 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        if(!gameOver)
         if (paused) {
             pauseOverlay.mouseMoved(e);
         }
@@ -162,26 +182,32 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()) {
 
-            case KeyEvent.VK_A:
-                player.setLeft(true);
-                break;
+        if (gameOver) {
+            gameOverOverlay.keyPressed(e);
+        } else {
+            switch (e.getKeyCode()) {
 
-            case KeyEvent.VK_D:
-                player.setRight(true);
-                break;
-            case KeyEvent.VK_SPACE:
-                player.setJump(true);
-                break;
-            case KeyEvent.VK_ESCAPE:
-                paused = !paused;
-                break;
+                case KeyEvent.VK_A:
+                    player.setLeft(true);
+                    break;
+
+                case KeyEvent.VK_D:
+                    player.setRight(true);
+                    break;
+                case KeyEvent.VK_SPACE:
+                    player.setJump(true);
+                    break;
+                case KeyEvent.VK_ESCAPE:
+                    paused = !paused;
+                    break;
+            }
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        if(!gameOver)
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:
                 player.setLeft(false);
@@ -228,9 +254,23 @@ public class Playing extends State implements StateMethods {
         paused = false;
     }
 
-    public void mouseDragged(MouseEvent e){
-        if(paused){
+    public void mouseDragged(MouseEvent e) {
+        if(!gameOver)
+        if (paused) {
             pauseOverlay.mouseDragged(e);
         }
     }
+
+    //resetea el juego cuando sea necesario
+    public void resetAll() {
+        gameOver = false;
+        paused = false;
+        player.resetAll();
+        enemyManager.resetAllEnemies();
+    }
+   
+    public void checkEnemyHit(Rectangle2D.Float attackBox) {
+        enemyManager.checkEnemyHit(attackBox, player);
+    }
+
 }

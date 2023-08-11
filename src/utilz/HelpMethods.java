@@ -64,7 +64,7 @@ public class HelpMethods {
         if(xSpeed>0){ 
             //derecha
             int tileXPos = currentTile*Game.TILES_SIZE;
-            int xOffset =(int) (Game.TILES_SIZE-hitbox.width); //offset es la distancia faltante para llegar al hitbox del jugador desde el incicio deld ultimo tile
+            int xOffset =(int) (Game.TILES_SIZE-hitbox.width); //offset es la distancia faltante para llegar al hitbox del  jugador desde el incicio deld ultimo tile
             return tileXPos+xOffset-1;
             
         }else{

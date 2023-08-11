@@ -5,6 +5,8 @@
 //clase jugador
 package entities;
 
+import gamestates.Playing;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -18,12 +20,10 @@ import main.Game;
 //paquetes propios
 import main.GamePanel;
 import utilz.Constants;
-import static utilz.Constants.Directions.DOWN;
-import static utilz.Constants.Directions.LEFT;
-import static utilz.Constants.Directions.RIGHT;
-import static utilz.Constants.Directions.UP;
+import static utilz.Constants.Directions.*;
 import utilz.LoadSave;
 import static utilz.HelpMethods.*;
+import static utilz.Constants.PlayerConstants.MarioConstants.*;
 
 /**
  *
@@ -42,6 +42,12 @@ public class Player extends Entity {
     private int[][] lvlData; //para guardar la data del nivel actual
     private float xDrawOffset = 8 * Game.SCALE; //donde deberia iniciar el hitbox en x
     private float yDrawOffset = Game.SCALE; //donde deberia iniciar el djuego en y
+    private int currentMarioState = MINIMARIO; //estado de mario, si es mini o grande o fuego
+    private Playing playing;
+    
+    //para voltear la animacion del jugador si va hacia la izquierda
+    private int flipX = 0;
+    private int flipW = 1;
 
     //SALTO/GRAVEDAD
     private float airSpeed = 0f; //velccidad en la que viajamos por el aire
@@ -49,13 +55,23 @@ public class Player extends Entity {
     private float jumpSpeed = -2.25f * Game.SCALE; //para cuando presionemos saltar vayamos en esa direccion a esa cantidad de movimiento
     private float fallSpeedAfterCollision = 0.5f * Game.SCALE; //por si el jugador se golpea con el techo
     private boolean inAir = false;
+    
+    //vida
+    private int maxHealth = 1;
+    private int currentHealth = maxHealth;
+    
+    //attack
+    private Rectangle2D.Float attackBox;
+    private boolean attackChecked;
+    
 
     //constructor
-    public Player(float x, float y, int width, int height) {
+    public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
+        this.playing = playing;
         loadAnimations();
-        initHitbox(x, y, (int)(16* Game.SCALE), (int) (27 * Game.SCALE)); //inicializo el hitbox aqui decido de que tamanio va a ser desde donde esto leyendo el sprite
-
+        initHitbox(x, y, (int)(16* Game.SCALE), (int) (28 * Game.SCALE)); //inicializo el hitbox aqui decido de que tamanio va a ser desde donde esto leyendo el sprite
+        initAttackBox();
     }
 
     //set/gets
@@ -94,8 +110,53 @@ public class Player extends Entity {
     public void setJump(boolean jump) {
         this.jump = jump;
     }
+    
+    public boolean isJump(){
+        return jump;
+    }
+    
+    public void setInAir(boolean inAir){
+        this.inAir = inAir;
+    }
+    
+    public boolean isInAir(){
+        return inAir;
+    }
 
     //otros metodos
+    
+        //actualiza los calculos del juego
+    public void update() {
+        
+        
+        
+        if(currentHealth<=0){
+            playing.setGameOver(true);
+            return;
+        }
+        
+        updateAttackBox();
+
+        updatePos(); //actualiza la posicion del jugador
+        if(inAir)
+            checkAttack(); //reviso el ataque
+
+        updateAnimationTick(); //actualizar animacion de personaje
+
+        updateAnimation(); //actualizar la animacion actual
+        
+        
+        
+    }
+
+    public void render(Graphics g, int lvlOffset) {
+   
+        
+        g.drawImage(miniMarioAnimations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset)-lvlOffset+flipX, (int) (hitbox.y - yDrawOffset),width*flipW,height, null); //dibujamos la imagen del personaje en la posicion 0,0
+        //this.drawHitbox(g, lvlOffset); //para dibujar el hitbox del jugador
+        //drawAttackBox(g,lvlOffset);
+    }
+    
     //posicion del jugador
     private void updatePos() {
         moving = false; //reseteo de variable
@@ -118,9 +179,13 @@ public class Player extends Entity {
         //el personaje no se frene
         if (left) {
             xSpeed -= playerSpeed;
+            flipX = width;
+            flipW = -1;
         }
         if (right) {
             xSpeed += playerSpeed;
+            flipX = 0;
+            flipW = 1;
         }
 
         //si no esta en el aire deberia estar cayendo al piso
@@ -160,8 +225,10 @@ public class Player extends Entity {
 
     //actualiza la animacion dependiendo de si el personaje se esta moviendo o no
     private void updateAnimation() {
+        int startAni = playerAction;
         if (moving) {
             playerAction = Constants.PlayerConstants.RUNRIGHT;
+            
         } else {
             playerAction = Constants.PlayerConstants.RIGHT;
         }
@@ -170,24 +237,17 @@ public class Player extends Entity {
         if (inAir) {
             playerAction = Constants.PlayerConstants.JUMP; 
         }
-
-    }
-
-    //actualiza los calculos del juego
-    public void update() {
-
-        updatePos(); //actualiza la posicion del jugador
-
-        updateAnimationTick(); //actualizar animacion de personaje
-
-        updateAnimation(); //actualizar la animacion actual
         
-    }
+        if(startAni != playerAction)
+            resetAniTick();
+        
+        
 
-    public void render(Graphics g, int lvlOffset) {
-   
-        g.drawImage(miniMarioAnimations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset)-lvlOffset, (int) (hitbox.y - yDrawOffset),3*16,3*16, null); //dibujamos la imagen del personaje en la posicion 0,0
-        //this.drawHitbox(g, lvlOffset);
+    }
+    
+    private void resetAniTick(){
+        aniTick = 0;
+        aniIndex = 0;
     }
 
     //animaciones de movimiento del jugador
@@ -213,6 +273,9 @@ public class Player extends Entity {
 
         //cargo mario salto a la derecha
         miniMarioAnimations[Constants.PlayerConstants.JUMP][0] = img.getSubimage(360, 36, width, height);
+        
+        //mario muerto
+        miniMarioAnimations[Constants.PlayerConstants.DEAD][0] = img.getSubimage(360, 63, width, height);
     }
 
     public void loadLvlData(int[][] lvlData) {
@@ -236,6 +299,7 @@ public class Player extends Entity {
             aniIndex++;
             if (aniIndex >= Constants.PlayerConstants.getSpriteLength(playerAction)) {
                 aniIndex = 0;
+                attackChecked = false;
             }
         }
 
@@ -255,6 +319,21 @@ public class Player extends Entity {
         } else { //si no podemos
             hitbox.x = getEntityXPosNextToWall(hitbox, xSpeed);  //ayuda a saber la posicion en x de la entidad cerca de una pared
         }
+        
+        
+    }
+    
+    //metodo que cambia la vida del jugador
+    public void changeHealth(int value){
+        currentHealth +=value;
+        
+        if(currentHealth<=0){
+            currentHealth = 0;
+            //gameOver();
+        }else if(currentHealth >= maxHealth) {
+            currentHealth = maxHealth;
+        }
+            
     }
 
     private void resetInAir() {
@@ -262,12 +341,69 @@ public class Player extends Entity {
         airSpeed = 0;
     }
 
-    private void jump() {
+    public void jump() {
         if (inAir) {
             return;
         }
         inAir = true;
         airSpeed = jumpSpeed;
     }
+   
+    //cambia el estado de mario si es mini o grande
+    public void changePlayerState(){
+        currentMarioState--;
+    }
     
+//    	public void changeHealth(int value) {
+//		currentHealth += value;
+//
+//		if (currentHealth <= 0)
+//			currentHealth = 0;
+//		else if (currentHealth >= maxHealth)
+//			currentHealth = maxHealth;
+//	}
+
+    public void resetAll() {
+        resetDirBooleans();
+        inAir = false;
+        moving = false;
+        playerAction = Constants.PlayerConstants.RIGHT;
+        currentMarioState = 0;
+        currentHealth = maxHealth;
+        
+        
+        //posicion del jugador
+        hitbox.x = x;
+        hitbox.y = y;
+        
+        if(!isEntityOnFloor(hitbox,lvlData))
+            inAir = true;
+        
+        
+    }
+    
+    //reviso si el jugador ataca al enemigo
+    private void checkAttack() {
+        if(attackChecked)
+            return;
+        
+        attackChecked = true;
+        playing.checkEnemyHit(attackBox);
+    
+    }
+
+    private void initAttackBox() {
+        attackBox = new Rectangle2D.Float(x,y,(int)(20*Game.SCALE), (int) (20*Game.SCALE));
+    }
+
+    private void updateAttackBox() {
+       attackBox.width = (10*Game.SCALE);
+       attackBox.x = hitbox.x+(2*Game.SCALE);
+       attackBox.y = hitbox.y+(9*Game.SCALE);
+    }
+
+    private void drawAttackBox(Graphics g, int lvlOffsetX) {
+        g.setColor(Color.red);
+        g.drawRect((int) attackBox.x-lvlOffsetX,(int) attackBox.y, (int)attackBox.width, (int) attackBox.height);
+    }
 }

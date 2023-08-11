@@ -107,11 +107,19 @@ public class Constants {
                         case MOVING:
                             return 2;
                         case DEAD:
-                            return 1;
+                            return 6;
                     }
 
             }
             return 0;
+        }
+        
+        public static int getMaxHealth(int enemy_type){
+            switch(enemy_type){
+                case GOOMBA:
+                default:
+                    return 1;
+            }
         }
 
     }
@@ -129,12 +137,20 @@ public class Constants {
     //constantes de animaciones del jugador
     public static class PlayerConstants {
 
-        //atributos
+        //mini mario animations
         public static final int RIGHT = 0;
         public static final int RUNRIGHT = 1;
         public static final int LEFT = 2;
         public static final int RUNLEFT = 3;
         public static final int JUMP = 4;
+        public static final int DEAD = 5;
+        
+        public static class MarioConstants{
+            public static final int DEADMARIO = -1;
+            public static final int MINIMARIO = 0;
+            public static final int MARIO = 1;
+            public static final int FIREMARIO = 2;
+        }
 
         //set/get
         //funcion que devuelve la cantidad de sprites dependiendo de la accion del jugador
