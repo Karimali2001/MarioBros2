@@ -167,6 +167,8 @@ public abstract class Enemy extends Entity {
         if(attackBox.intersects(player.hitbox)){
             if(!player.isInAir())
                 player.changeHealth(-1);
+            else
+                this.hurt(1, player);
             attackChecked = true;
         }
     }

@@ -89,7 +89,7 @@ public class EnemyManager {
         for(Goomba goomba: goombas)
            if(goomba.isActive())
             if(attackBox.intersects(goomba.getHitbox())){
-                if(player.isInAir()){
+                if(player.isInAir() || player.isJump()){
                 goomba.hurt(1, player);
                 return;
             }
