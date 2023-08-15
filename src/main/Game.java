@@ -11,6 +11,7 @@ import static gamestates.Gamestate.PLAYING;
 import gamestates.Menu;
 import gamestates.Playing;
 import java.awt.Graphics;
+import utilz.LoadSave;
 
 
 /**
@@ -47,6 +48,7 @@ public class Game implements Runnable {
         initClases(); //inicializa las entidades
         gamePanel = new GamePanel(this);
         gameWindow = new GameWindow(gamePanel);
+        gamePanel.setFocusable(true);
         gamePanel.requestFocus(); //le decimos al panel que este pendiente de las entradas
 
         startGameLoop();

@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import levels.Level;
 import utilz.Constants.EnemyConstants;
 import static utilz.Constants.EnemyConstants.GOOMBA;
 import static utilz.Constants.EnemyConstants.GOOMBA_HEIGHT;
@@ -30,15 +31,20 @@ public class EnemyManager {
     public EnemyManager(Playing playing){
         this.playing = playing;
         loadEnemyImgs();
-        addEnemies();
     }
     //set/get
     //otros metodso
     
     public void update(int[][] lvlData, Player player){
+        boolean isAnyActive = false;
         for(Goomba goomba: goombas)
-            if(goomba.isActive())
+            if(goomba.isActive()){
                 goomba.update(lvlData, player);
+                isAnyActive = true;
+            }
+        
+        if(!isAnyActive)
+            playing.setLevelCompleted(true);
     }
     
     public void draw(Graphics g, int xLvlOffset){
@@ -80,8 +86,8 @@ public class EnemyManager {
     }
 
     //agrega todos los enemigos al mapa
-    private void addEnemies() {
-        goombas = LoadSave.getGoombas();
+    public void loadEnemies(Level level) {
+        goombas = level.getGoombas();
         System.out.println("size of goombas: "+goombas.size());
     }
     //reviso si el jugador ataca al enemigo

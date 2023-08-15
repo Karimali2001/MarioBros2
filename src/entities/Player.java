@@ -8,6 +8,7 @@ package entities;
 import gamestates.Playing;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -121,6 +122,14 @@ public class Player extends Entity {
     
     public boolean isInAir(){
         return inAir;
+    }
+    
+    public void setSpawn(Point spawn){
+        this.x = spawn.x;
+        this.y = spawn.y;
+        hitbox.x = x;
+        hitbox.y = y;
+        
     }
 
     //otros metodos

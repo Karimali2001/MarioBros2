@@ -6,10 +6,17 @@
 //clase que contendra metodos estaticos que reciben data y retornan un valor
 package utilz;
 
+import entities.Goomba;
+import java.awt.Color;
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import main.Game;
 import static main.Game.GAME_HEIGHT;
 import static main.Game.GAME_WIDTH;
+import static utilz.LoadSave.LEVEL_ONE_DATA;
+import static utilz.LoadSave.getSpriteAtlas;
 
 /**
  *
@@ -100,6 +107,66 @@ public class HelpMethods {
    
     //para saber si la entidad esta en el piso 
     public static boolean isFloor(Rectangle2D.Float hitbox,float xSpeed,int[][] lvlData){
+        if(xSpeed>0)
+            return isSolid(hitbox.x+hitbox.width+xSpeed,hitbox.y+hitbox.height+1,lvlData);
+        else
         return isSolid(hitbox.x+xSpeed,hitbox.y+hitbox.height+1,lvlData);
+    }
+    
+        //forma de representar niveles
+    //donde cada pixel de la imagen es una posicion del nivel
+    //el tipo de Tile depende del color
+    public static int[][] getLevelData(BufferedImage img) {
+        int[][] lvlData = new int[img.getHeight()][img.getWidth()];
+
+        //recorremos el tile map revisando por pixel por pixel
+        for (int j = 0; j < img.getHeight(); j++) {
+            for (int i = 0; i < img.getWidth(); i++) {
+                Color color = new Color(img.getRGB(i, j)); //obtenemos el color del pixel en la posicion i,j de la imagen
+                int value = color.getRed(); //agarramos el valor de la componente R
+
+                if (value >= 48)//por si la componente es mayor a la cantidad de tiles que disponemos (48)
+                {
+                    value = 0;
+                }
+                lvlData[j][i] = value; //lo guardamos en esa posicion para saber que va ahi
+            }
+        }
+        return lvlData;
+    }
+
+        //toma los goombas declarados en la imagen mapa
+    public static ArrayList<Goomba> getGoombas(BufferedImage img) {
+        ArrayList<Goomba> list = new ArrayList();
+        //recorremos el tile map revisando por pixel por pixel
+        for (int j = 0; j < img.getHeight(); j++) {
+            for (int i = 0; i < img.getWidth(); i++) {
+                Color color = new Color(img.getRGB(i, j)); //obtenemos el color del pixel en la posicion i,j de la imagen
+                int value = color.getGreen(); //agarramos el valor de la componente R
+
+                if (value == Constants.EnemyConstants.GOOMBA)//por si la componente es mayor a la cantidad de tiles que disponemos (48)
+                {
+                    list.add(new Goomba(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
+                }
+
+            }
+        }
+        return list;
+    }
+    
+    //funcion que revisa en el mapa imagen donde aparece el jugador al principio
+    //del juego y devuelve el punto donde se encuentra
+    public static Point getPlayerSpawn(BufferedImage img){
+                //recorremos el tile map revisando por pixel por pixel
+        for (int j = 0; j < img.getHeight(); j++) {
+            for (int i = 0; i < img.getWidth(); i++) {
+                Color color = new Color(img.getRGB(i, j)); //obtenemos el color del pixel en la posicion i,j de la imagen
+                int value = color.getGreen(); //agarramos el valor de la componente R
+
+                if (value == 100)
+                    return new Point(i*Game.TILES_SIZE, j*Game.TILES_SIZE);
+            }
+        }
+        return new Point(1*Game.TILES_SIZE, 1*Game.TILES_SIZE);
     }
 }

@@ -6,6 +6,14 @@
 //guardar informacion del nivel
 package levels;
 
+import entities.Goomba;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import main.Game;
+import utilz.HelpMethods;
+
+
 /**
  *
  * @author karim
@@ -13,13 +21,33 @@ package levels;
 public class Level {
     //atributos
     private int[][] lvlData; //arreglo que guarda los valores de una de las componentes del mapa de tiles para saber pieza o entidad va en ese lugar
+    private BufferedImage img;
+    private ArrayList<Goomba> goombas;
+    private int lvlTilesWide;
+    private int maxTilesOffset; 
+    private int maxLvlOffsetX; 
+    private Point playerSpawn;
+
+    
     
     //constructor
-    public Level(int[][] lvlData) {
-        this.lvlData = lvlData;
+    public Level(BufferedImage img) {
+        this.img = img;
+        createLevelData();
+        createEnemies();
+        calcLvlOffsets();
+        calcPlayerSpawn();
     }
     
     //set/get
+    public int getLvlOffset(){
+        return maxLvlOffsetX;
+    }
+    
+    
+    public ArrayList<Goomba> getGoombas(){
+        return goombas;
+    }
     
     //devuelve el indice donde debe estar el sprite en la posicion x,y
     public int getSpriteIndex(int x, int y){
@@ -29,7 +57,31 @@ public class Level {
     public int[][] getLevelData(){
         return lvlData;
     }
+
+    public Point getPlayerSpawn() {
+        return playerSpawn;
+    }
+    
+    
     //otros metodos
+
+    private void createLevelData() {
+        lvlData = HelpMethods.getLevelData(img);
+    }
+
+    private void createEnemies() {
+        goombas = HelpMethods.getGoombas(img);
+    }
+
+    private void calcLvlOffsets() {
+        lvlTilesWide = img.getWidth();
+        maxTilesOffset = lvlTilesWide -Game.TILES_IN_WIDTH;
+        maxLvlOffsetX = Game.TILES_SIZE*maxTilesOffset;
+    }
+
+    private void calcPlayerSpawn() {
+        playerSpawn = HelpMethods.getPlayerSpawn(img);
+    }
     
     
 }

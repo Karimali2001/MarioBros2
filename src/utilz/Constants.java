@@ -107,7 +107,7 @@ public class Constants {
                         case MOVING:
                             return 2;
                         case DEAD:
-                            return 6;
+                            return 4;
                     }
 
             }

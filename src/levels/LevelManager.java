@@ -12,8 +12,10 @@
 package levels;
 
 //paquetes externos
+import gamestates.Gamestate;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 //paquetes propios
 import main.Game;
@@ -29,26 +31,31 @@ public class LevelManager {
     //atributos
     private Game game;
     private BufferedImage[] levelSprite; //sprite de componentes para niveles
-    private Level levelOne; //variable para guardar los indices de los tiles en el arreglo
-    
+    private ArrayList<Level> levels; //niveles 
+    private int lvlIndex = 0; //el nivel en el que estoy
     //constructores
     public LevelManager(Game game) {
         this.game = game;
         importOutsideSprites();
-        levelOne = new Level(LoadSave.getLevelData()); //instanciamos llevandonos los tiles del tile_set
+        levels = new ArrayList<>();
+        buildAllLevels();
     }
 
     //set/get
     public Level getCurrentLevel() {
-        return levelOne;
+        return levels.get(lvlIndex);
+    }
+    
+    public int getAmountOfLevels(){
+        return levels.size();
     }
 
     //otros metodos
     public void draw(Graphics g, int lvlOffset) {
 
         for (int j = 0; j < Game.TILES_IN_HEIGHT; j++) {
-            for (int i = 0; i <levelOne.getLevelData()[0].length ; i++) {
-                int index = levelOne.getSpriteIndex(i, j);
+            for (int i = 0; i <levels.get(lvlIndex).getLevelData()[0].length ; i++) {
+                int index = levels.get(lvlIndex).getSpriteIndex(i, j);
                 //System.out.println("index: "+index);
                 //dependiendo del indice obtenido mostramos el tile correspondiente del arreglo levelSprite 
                 g.drawImage(levelSprite[index], TILES_SIZE * i-lvlOffset, TILES_SIZE * j, TILES_SIZE, TILES_SIZE, null);//donde queremos dibujar los tiles
@@ -69,6 +76,27 @@ public class LevelManager {
         //levelSprite[0] = img.getSubimage(38,76, 32, 32); //aqui estamos leyendo los tiles en cuadros de 32*32 leo el vacio piso mario
         levelSprite[0] = img.getSubimage(19,38, 16, 16); //aqui estamos leyendo los tiles en cuadros de 32*32 leo el vacio piso mario
 
+    }
+
+    //construyo todos los niveles
+    private void buildAllLevels() {
+        BufferedImage[] allLevels = LoadSave.getAllLevels();
+        for(BufferedImage img: allLevels)
+            levels.add(new Level(img));
+    }
+
+    public void loadNextLevel() {
+        lvlIndex++;
+        if(lvlIndex >= levels.size()){
+            lvlIndex = 0;
+            System.out.println("No more levels! Game Completed!");
+            Gamestate.state = Gamestate.MENU;
+        }
+        
+        Level newLevel = levels.get(lvlIndex);
+        game.getPlaying().getEnemyManager().loadEnemies(newLevel);
+        game.getPlaying().getPlayer().loadLvlData(newLevel.getLevelData());
+        game.getPlaying().setMaxLvlOffset(newLevel.getLvlOffset());
     }
 }
 
