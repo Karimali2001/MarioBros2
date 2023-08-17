@@ -41,12 +41,16 @@ public class ObjectManager {
     //otros metodos
 
     private void loadImgs() {
-        bigMushroomImg = LoadSave.getSpriteAtlas(LoadSave.BIG_MUSHROOM);
+         
         
-        BufferedImage misteryBoxSprite = LoadSave.getSpriteAtlas(LoadSave.MISTERY_BOX);
-        misteryBoxImgs = new BufferedImage[2];
-        for(int i =0;i<misteryBoxImgs.length;i++)
-            misteryBoxImgs[i] = misteryBoxSprite.getSubimage(0, i*44, 46, 44);
+        BufferedImage objectsSprites = LoadSave.getSpriteAtlas(LoadSave.OBJECTS_SPRITES);
+        
+        bigMushroomImg = objectsSprites.getSubimage(324, 7, 16, 16);
+        
+        misteryBoxImgs = new BufferedImage[3];
+        misteryBoxImgs[0] = objectsSprites.getSubimage(409,41,16,16);
+        misteryBoxImgs[1] = objectsSprites.getSubimage(426,41,16,16);
+        misteryBoxImgs[2] = objectsSprites.getSubimage(443,41,16,16);
         
     }
     
@@ -68,14 +72,14 @@ public class ObjectManager {
 
     private void drawBigMushrooms(Graphics g, int xLvlOffset) {
         for(BigMushroom bm: bigMushrooms){
-            g.drawImage(bigMushroomImg,(int) (bm.getHitbox().x-bm.getxDrawOffset()-xLvlOffset), (int) (bm.getHitbox().y-bm.getyDrawOffset()),CONTAINER_WIDTH/2,CONTAINER_HEIGHT/2, null);
+            g.drawImage(bigMushroomImg,(int) (bm.getHitbox().x-bm.getxDrawOffset()-xLvlOffset), (int) (bm.getHitbox().y-bm.getyDrawOffset()),(int) (CONTAINER_WIDTH*0.75),(int) (CONTAINER_HEIGHT*0.75), null);
         }
     }
 
     private void drawContainers(Graphics g, int xLvlOffset) {
         for(GameContainer gC: containers)
             if(gC.isActive())
-                 g.drawImage(misteryBoxImgs[1],(int) (gC.getHitbox().x-gC.getxDrawOffset()-xLvlOffset), (int) (gC.getHitbox().y-gC.getyDrawOffset()),CONTAINER_WIDTH,CONTAINER_HEIGHT, null);
+                 g.drawImage(misteryBoxImgs[gC.getAniIndex()],(int) (gC.getHitbox().x-gC.getxDrawOffset()-xLvlOffset), (int) (gC.getHitbox().y-gC.getyDrawOffset()),CONTAINER_WIDTH,CONTAINER_HEIGHT, null);
         
     }
 }

@@ -21,7 +21,7 @@ public class GameObject {
     protected boolean doAnimation, active = true; //bandera para saber si existe animacion
     protected int xDrawOffset, yDrawOffset; 
     protected int aniTick, aniIndex;
-    protected float aniSpeed = 0.35f;
+    protected float aniSpeed;
     
     
     //constructor
@@ -98,10 +98,10 @@ public class GameObject {
             aniIndex++;
             if (aniIndex >= getSpriteAmount(objType)) {
                 aniIndex = 0;
-                if(objType == MISTERY_BOX || objType == BIG_MUSHROOM){
-                    doAnimation = false;
-                    active = false;
-                }
+//                if(objType == MISTERY_BOX || objType == BIG_MUSHROOM){
+//                    doAnimation = false;
+//                    active = false;
+//                }
             }
         }
     }

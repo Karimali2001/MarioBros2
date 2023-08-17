@@ -20,7 +20,11 @@ public class GameContainer extends GameObject{
     //constructor
     public GameContainer(int x, int y, int objType) {
         super(x, y, objType);
+        
         createHitbox();
+        
+        aniSpeed = 35f;
+        doAnimation = true;
     }
     
    //set/gets
@@ -28,7 +32,7 @@ public class GameContainer extends GameObject{
     //otros metodos
     private void createHitbox() {
         if(objType == MISTERY_BOX){
-                initHitbox(34,34);
+                initHitbox(32,32);
                 
                 xDrawOffset = (int) (Game.SCALE);
                 yDrawOffset = (int) (Game.SCALE);

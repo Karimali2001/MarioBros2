@@ -34,8 +34,7 @@ public class LoadSave {
     public static final String LEVEL_ONE_DATA = "res/levels/level_one_data_long2.png"; //tile map
     public static final String MENU_BUTTONS = "res/menu/button_atlas.png";
     public static final String GOOMBA_SPRITE = "res/sprites/marioEnemies.png";
-    public static final String MISTERY_BOX = "res/sprites/mistery_box.png";
-    public static final String BIG_MUSHROOM = "res/sprites/big_mushroom.png";
+    public static final String OBJECTS_SPRITES = "res/sprites/objectsSprites.png";
     public static final String PLAYING_BG_1 = "res/levels/cielo.png";
     public static final String PLAYING_BG_2 = "res/levels/fondoFuego.png";
     public static final String BIG_MOUNTAINS = "res/levels/big_mountains2.png";

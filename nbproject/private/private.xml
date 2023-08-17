@@ -7,6 +7,7 @@
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/entities/Goomba.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/levels/Level.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/GUI/Estadisticas.java</file>
+            <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/objects/GameContainer.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/main/Game.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/inputs/MouseInputs.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/utilz/Constants.java</file>
@@ -20,7 +21,6 @@
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/res/levels/Background2-1.png</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/GUI/Menu.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/ui/PauseOverlay.java</file>
-            <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/res/sprites/mistery_box.png</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/ui/SoundButton.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/ui/PauseButton.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/ui/GameOver.java</file>
@@ -28,7 +28,6 @@
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/gamestates/State.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/res/menu/volume_buttons.png</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/levels/LevelManager.java</file>
-            <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/res/sprites/GOOMBA.png</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/ui/UrmButton.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/res/sprites/sprite_characters.png</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/GUI/Ayuda.java</file>
@@ -44,8 +43,8 @@
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/main/MainClass.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/utilz/HelpMethods.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/utilz/LoadSave.java</file>
-            <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/objects/ObjectManager.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/gamestates/Menu.java</file>
+            <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/objects/ObjectManager.java</file>
             <file>file:/C:/Users/karim/Desktop/Mario%20Bros/MarioMenuVersion1/src/ui/GameOverOverlay.java</file>
         </group>
     </open-files>

@@ -5,6 +5,7 @@
 package objects;
 
 import main.Game;
+import static utilz.Constants.ObjectConstants.CONTAINER_WIDTH;
 
 /**
  * hongo que aumenta el tamanio de mario
@@ -17,8 +18,8 @@ public class BigMushroom extends GameObject {
     //constructores
     public BigMushroom(int x, int y, int objType) {
         super(x, y, objType);
-        doAnimation = false;
-        initHitbox(34,34);
+        doAnimation = true;
+        initHitbox((int) (CONTAINER_WIDTH*0.75),(int) (CONTAINER_WIDTH*0.75));
         xDrawOffset = (int) (Game.SCALE);
         yDrawOffset = (int) (Game.SCALE);
     }

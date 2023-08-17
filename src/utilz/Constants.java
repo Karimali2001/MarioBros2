@@ -69,14 +69,15 @@ public class Constants {
         public static final int BIG_MUSHROOM = 0;
         public static final int MISTERY_BOX = 1;
 
-        public static final int CONTAINER_WIDTH_DEFAULT = 46;
-        public static final int CONTAINER_HEIGHT_DEFAULT = 44;
+        public static final int CONTAINER_WIDTH_DEFAULT = 32;
+        public static final int CONTAINER_HEIGHT_DEFAULT = 32;
         public static final int CONTAINER_WIDTH = (int) (Game.SCALE * CONTAINER_WIDTH_DEFAULT);
         public static final int CONTAINER_HEIGHT = (int) (Game.SCALE * CONTAINER_HEIGHT_DEFAULT);
 
         public static int getSpriteAmount(int objectType) {
             switch (objectType) {
                 case MISTERY_BOX:
+                    return 3;
                 case BIG_MUSHROOM:
                     return 0;
             }
