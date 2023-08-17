@@ -11,17 +11,12 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import main.Game;
 
 //paquetes propios
-import main.GamePanel;
 import utilz.Constants;
-import static utilz.Constants.Directions.*;
+import static utilz.Constants.ANI_SPEED;
+import static utilz.Constants.GRAVITY;
 import utilz.LoadSave;
 import static utilz.HelpMethods.*;
 import static utilz.Constants.PlayerConstants.MarioConstants.*;
@@ -34,12 +29,9 @@ public class Player extends Entity {
 
     //atributos
     private BufferedImage[][] miniMarioAnimations; //todas las animaciones de Mario
-    private int aniTick, aniIndex, aniSpeed = 15; //for updating animation
-    private boolean left, up, right, down, jump;
+    private boolean left, right, jump;
     private boolean moving = false; // si se esta o no moviendo
-    private int playerAction = Constants.PlayerConstants.RIGHT; //guarda el movimiento actual del jugador
     private int lastPlayerAction = Constants.PlayerConstants.RIGHT; //guarda el movimiento anterior del jugador
-    private float playerSpeed = 1.0f*Game.SCALE; //velocidad del jugador 
     private int[][] lvlData; //para guardar la data del nivel actual
     private float xDrawOffset = 8 * Game.SCALE; //donde deberia iniciar el hitbox en x
     private float yDrawOffset = Game.SCALE; //donde deberia iniciar el djuego en y
@@ -51,18 +43,10 @@ public class Player extends Entity {
     private int flipW = 1;
 
     //SALTO/GRAVEDAD
-    private float airSpeed = 0f; //velccidad en la que viajamos por el aire
-    private float gravity = 0.04f * Game.SCALE; //gravedad
     private float jumpSpeed = -2.25f * Game.SCALE; //para cuando presionemos saltar vayamos en esa direccion a esa cantidad de movimiento
     private float fallSpeedAfterCollision = 0.5f * Game.SCALE; //por si el jugador se golpea con el techo
-    private boolean inAir = false;
-    
-    //vida
-    private int maxHealth = 1;
-    private int currentHealth = maxHealth;
     
     //attack
-    private Rectangle2D.Float attackBox;
     private boolean attackChecked;
     
 
@@ -70,8 +54,15 @@ public class Player extends Entity {
     public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
         this.playing = playing;
+        state = Constants.PlayerConstants.RIGHT;
+        
+        maxHealth = 1;
+        currentHealth = maxHealth;
+        
+        walkSpeed = 1.0f*Game.SCALE;
+        
         loadAnimations();
-        initHitbox(x, y, (int)(16* Game.SCALE), (int) (28 * Game.SCALE)); //inicializo el hitbox aqui decido de que tamanio va a ser desde donde esto leyendo el sprite
+        initHitbox(16,28); //inicializo el hitbox aqui decido de que tamanio va a ser desde donde esto leyendo el sprite
         initAttackBox();
     }
 
@@ -84,14 +75,6 @@ public class Player extends Entity {
         this.left = left;
     }
 
-    public boolean isUp() {
-        return up;
-    }
-
-    public void setUp(boolean up) {
-        this.up = up;
-    }
-
     public boolean isRight() {
         return right;
     }
@@ -100,13 +83,6 @@ public class Player extends Entity {
         this.right = right;
     }
 
-    public boolean isDown() {
-        return down;
-    }
-
-    public void setDown(boolean down) {
-        this.down = down;
-    }
 
     public void setJump(boolean jump) {
         this.jump = jump;
@@ -161,7 +137,7 @@ public class Player extends Entity {
     public void render(Graphics g, int lvlOffset) {
    
         
-        g.drawImage(miniMarioAnimations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset)-lvlOffset+flipX, (int) (hitbox.y - yDrawOffset),width*flipW,height, null); //dibujamos la imagen del personaje en la posicion 0,0
+        g.drawImage(miniMarioAnimations[state][aniIndex], (int) (hitbox.x - xDrawOffset)-lvlOffset+flipX, (int) (hitbox.y - yDrawOffset),width*flipW,height, null); //dibujamos la imagen del personaje en la posicion 0,0
         //this.drawHitbox(g, lvlOffset); //para dibujar el hitbox del jugador
         //drawAttackBox(g,lvlOffset);
     }
@@ -187,12 +163,12 @@ public class Player extends Entity {
         //al mismo tiempo y suelta una de las dos 
         //el personaje no se frene
         if (left) {
-            xSpeed -= playerSpeed;
+            xSpeed -= walkSpeed;
             flipX = width;
             flipW = -1;
         }
         if (right) {
-            xSpeed += playerSpeed;
+            xSpeed += walkSpeed;
             flipX = 0;
             flipW = 1;
         }
@@ -209,7 +185,7 @@ public class Player extends Entity {
             if (canMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) {//reviso eje y
                 //actualizo la posicion en Y (sea arriba o abajo)
                 hitbox.y += airSpeed;
-                airSpeed += gravity;
+                airSpeed += GRAVITY;
                 //actualizo la posicion en el eje X
                 updateXPos(xSpeed);
                 
@@ -234,20 +210,20 @@ public class Player extends Entity {
 
     //actualiza la animacion dependiendo de si el personaje se esta moviendo o no
     private void updateAnimation() {
-        int startAni = playerAction;
+        int startAni = state;
         if (moving) {
-            playerAction = Constants.PlayerConstants.RUNRIGHT;
+            state = Constants.PlayerConstants.RUNRIGHT;
             
         } else {
-            playerAction = Constants.PlayerConstants.RIGHT;
+            state = Constants.PlayerConstants.RIGHT;
         }
         
         
         if (inAir) {
-            playerAction = Constants.PlayerConstants.JUMP; 
+            state = Constants.PlayerConstants.JUMP; 
         }
         
-        if(startAni != playerAction)
+        if(startAni != state)
             resetAniTick();
         
         
@@ -297,16 +273,16 @@ public class Player extends Entity {
     //actualiza cada segundo la animacion del jugador
     private void updateAnimationTick() {
         //esta parte es para manejar el cambio de animacion
-        if (playerAction != lastPlayerAction) {
+        if (state != lastPlayerAction) {
             aniIndex = 0;
-            lastPlayerAction = playerAction;
+            lastPlayerAction = state;
         }
 
         aniTick++;
-        if (aniTick >= aniSpeed) {
+        if (aniTick >=ANI_SPEED) {
             aniTick = 0;
             aniIndex++;
-            if (aniIndex >= Constants.PlayerConstants.getSpriteLength(playerAction)) {
+            if (aniIndex >= Constants.PlayerConstants.getSpriteLength(state)) {
                 aniIndex = 0;
                 attackChecked = false;
             }
@@ -317,8 +293,6 @@ public class Player extends Entity {
     //si el jugador toca otra ventana paro el movimiento del personaje
     public void resetDirBooleans() {
         left = false;
-        up = false;
-        down = false;
         right = false;
     }
 
@@ -376,7 +350,7 @@ public class Player extends Entity {
         resetDirBooleans();
         inAir = false;
         moving = false;
-        playerAction = Constants.PlayerConstants.RIGHT;
+        state = Constants.PlayerConstants.RIGHT;
         currentMarioState = 0;
         currentHealth = maxHealth;
         
@@ -411,8 +385,5 @@ public class Player extends Entity {
        attackBox.y = hitbox.y+(9*Game.SCALE);
     }
 
-    private void drawAttackBox(Graphics g, int lvlOffsetX) {
-        g.setColor(Color.red);
-        g.drawRect((int) attackBox.x-lvlOffsetX,(int) attackBox.y, (int)attackBox.width, (int) attackBox.height);
-    }
+
 }

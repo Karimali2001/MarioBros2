@@ -6,15 +6,10 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import main.Game;
-import static utilz.Constants.Directions.LEFT;
 import static utilz.Constants.EnemyConstants.*;
-import static utilz.HelpMethods.canMoveHere;
-import static utilz.HelpMethods.getEntityYPosUnderRoofOrAboveFloor;
-import static utilz.HelpMethods.isEntityOnFloor;
-import static utilz.HelpMethods.isFloor;
+
 
 /**
  *
@@ -22,13 +17,13 @@ import static utilz.HelpMethods.isFloor;
  */
 public class Goomba extends Enemy{
     //atributos
-    private Rectangle2D.Float attackBox;
+    
     private int attackBoxOffsetX;
     
     //constructor
     public Goomba(float x, float y) {
         super(x, y, GOOMBA_WIDTH, GOOMBA_HEIGHT, GOOMBA);
-        initHitbox(x,y,(int)(Game.SCALE*33),(int) (Game.SCALE*26));
+        initHitbox(33,26);
         initAttackBox();
     }
     
@@ -40,11 +35,6 @@ public class Goomba extends Enemy{
         updateBehavior(lvlData,player);
         updateAnimationTick();
         updateAttackBox();
-    }
-    
-    public void drawAttackBox(Graphics g, int xLvlOffset){
-        g.setColor(Color.red); 
-        g.drawRect((int) attackBox.x-xLvlOffset,(int) attackBox.y,(int) attackBox.width,(int) attackBox.height);
     }
     
    //para dibujar el hitbox
@@ -62,7 +52,7 @@ public class Goomba extends Enemy{
             updateInAir(lvlData);
         }else {
             //camine de izquierda a derecha
-            switch(enemyState){
+            switch(state){
                 case MOVING:
                     move(lvlData);
 

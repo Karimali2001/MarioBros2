@@ -6,10 +6,12 @@ package entities;
 
 import java.awt.geom.Rectangle2D;
 import main.Game;
+import static utilz.Constants.ANI_SPEED;
 import static utilz.Constants.EnemyConstants.*;
 import static utilz.Constants.EnemyConstants.getSpriteAmount;
 import static utilz.HelpMethods.*;
 import static utilz.Constants.Directions.*;
+import static utilz.Constants.GRAVITY;
 
 /**
  * CLASE DE LA CUAL HEREDARAN TODOS LOS ENEMIGOS
@@ -19,18 +21,9 @@ import static utilz.Constants.Directions.*;
 public abstract class Enemy extends Entity {
 
     //atributos
-    protected int aniIndex;//para saber cual animacion usar
-    protected int enemyState; //para saber si el enemigo se esta moviendo o esta muerto o etc
     protected int enemyType; //que tipo de enemigo es
-    protected int aniTick, aniSpeed = 25; //velocidad de animacion
     protected boolean firstUpdate = true; //bandera para saber si es la primera actualizacion de juego
-    protected boolean inAir; //para saber si esta en el aire
-    protected float fallSpeed; //velocidad de caida
-    protected float gravity = 0.04f * Game.SCALE; //gravedad
-    protected float walkSpeed = 0.25f * Game.SCALE; //velocidad de caminar
     protected int walkDir = LEFT; //direccion 
-    protected int maxHealth; //maxima vida
-    protected int currentHealth; //vida actual
     protected boolean active = true; //enemigo activo
     protected boolean attackChecked;
     
@@ -39,22 +32,16 @@ public abstract class Enemy extends Entity {
     public Enemy(float x, float y, int width, int height, int enemyType) {
         super(x, y, width, height);
         this.enemyType = enemyType;
-        initHitbox(x, y, width, height);
         
         //vida del enemigo
         maxHealth = getMaxHealth(enemyType);
         currentHealth = maxHealth;
+        
+        walkSpeed = 0.25f * Game.SCALE;
 
     }
 
     //set/get
-    public int getAniIndex() {
-        return aniIndex;
-    }
-
-    public int getEnemyState() {
-        return enemyState;
-    }
     
     public boolean isActive(){
         return active;
@@ -63,12 +50,12 @@ public abstract class Enemy extends Entity {
     //otros metodos
     protected void updateAnimationTick() {
         aniTick++;
-        if (aniTick >= aniSpeed) {
+        if (aniTick >= ANI_SPEED) {
             aniTick = 0;
             aniIndex++;
-            if (aniIndex >= getSpriteAmount(enemyType, enemyState)) {
+            if (aniIndex >= getSpriteAmount(enemyType, state)) {
                 aniIndex = 0;
-                if(enemyState == DEAD)
+                if(state == DEAD)
                     active = false;
             }
         }
@@ -94,12 +81,12 @@ public abstract class Enemy extends Entity {
     
     protected void updateInAir(int[][] lvlData){
             //estamos en el aire
-            if (canMoveHere(hitbox.x, hitbox.y + fallSpeed, hitbox.width, hitbox.height, lvlData)) {
-                hitbox.y += fallSpeed;
-                fallSpeed += gravity;
+            if (canMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) {
+                hitbox.y += airSpeed;
+                airSpeed += GRAVITY;
             }else{
                inAir = false;
-               hitbox.y = getEntityYPosUnderRoofOrAboveFloor(hitbox,fallSpeed);    
+               hitbox.y = getEntityYPosUnderRoofOrAboveFloor(hitbox,airSpeed);    
         } 
     }
     
@@ -125,7 +112,7 @@ public abstract class Enemy extends Entity {
 
 //para el cambio de estado de enemigo
     protected void newState(int enemyState){
-        this.enemyState = enemyState;
+        this.state = enemyState;
         aniTick = 0;
         aniIndex = 0;
     }
@@ -156,7 +143,7 @@ public abstract class Enemy extends Entity {
         currentHealth = maxHealth;
         newState(MOVING);
         active = true;
-        fallSpeed = 0;
+        airSpeed = 0;
         
         //posicion
         hitbox.x = x;

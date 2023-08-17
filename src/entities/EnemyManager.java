@@ -76,7 +76,7 @@ public class EnemyManager {
     private void drawGoombas(Graphics g, int xLvlOffset) {
         for(Goomba goomba: goombas){
             if(goomba.isActive()){           
-                g.drawImage(goombaArray[goomba.getEnemyState()][goomba.getAniIndex()], (int) goomba.getHitbox().x-xLvlOffset,(int) goomba.getHitbox().y, GOOMBA_WIDTH, GOOMBA_HEIGHT,null );
+                g.drawImage(goombaArray[goomba.getState()][goomba.getAniIndex()], (int) goomba.getHitbox().x-xLvlOffset,(int) goomba.getHitbox().y, GOOMBA_WIDTH, GOOMBA_HEIGHT,null );
                 //goomba.drawAttackBox(g, xLvlOffset);
                 
             }

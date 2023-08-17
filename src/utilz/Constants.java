@@ -12,6 +12,9 @@ import main.Game;
  * @author karim
  */
 public class Constants {
+    
+     public static final float GRAVITY = 0.04f * Game.SCALE; //gravedad
+     public static final int ANI_SPEED = 25; //velocidad de animacion
 
     //constantes para la IU del JUEGO 
     public static class UI {
