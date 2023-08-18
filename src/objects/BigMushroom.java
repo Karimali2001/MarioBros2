@@ -22,6 +22,9 @@ public class BigMushroom extends GameObject {
         initHitbox((int) (CONTAINER_WIDTH*0.75),(int) (CONTAINER_WIDTH*0.75));
         xDrawOffset = (int) (Game.SCALE);
         yDrawOffset = (int) (Game.SCALE);
+        
+        //para que que el objeto quede justo sobre y en el medio del tile
+        hitbox.y += yDrawOffset +(int)(Game.SCALE*8);
     }
     
     

@@ -6,9 +6,12 @@ package objects;
 
 import gamestates.Playing;
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import levels.Level;
 import static utilz.Constants.ObjectConstants.*;
+import utilz.Constants.ObjectConstants.MisteryBox;
 import utilz.LoadSave;
 
 /**
@@ -18,7 +21,7 @@ import utilz.LoadSave;
 public class ObjectManager {
     //atributos
     private Playing playing;
-    private BufferedImage[] misteryBoxImgs;
+    private BufferedImage[][] misteryBoxImgs;
     private BufferedImage bigMushroomImg;
     private ArrayList<BigMushroom> bigMushrooms;
     private ArrayList<GameContainer> containers;
@@ -28,15 +31,9 @@ public class ObjectManager {
     public ObjectManager(Playing playing){
         this.playing = playing;
         loadImgs();
-        
-        bigMushrooms = new ArrayList();
-        containers = new ArrayList();
-        
-        bigMushrooms.add(new BigMushroom(300,300,BIG_MUSHROOM));
-        containers.add(new GameContainer(600,300,MISTERY_BOX));
     }
     
-    //set/tet
+    //set/get
     
     //otros metodos
 
@@ -47,10 +44,17 @@ public class ObjectManager {
         
         bigMushroomImg = objectsSprites.getSubimage(324, 7, 16, 16);
         
-        misteryBoxImgs = new BufferedImage[3];
-        misteryBoxImgs[0] = objectsSprites.getSubimage(409,41,16,16);
-        misteryBoxImgs[1] = objectsSprites.getSubimage(426,41,16,16);
-        misteryBoxImgs[2] = objectsSprites.getSubimage(443,41,16,16);
+        //mistery box sprites
+        
+        //on
+        misteryBoxImgs = new BufferedImage[2][3];
+        misteryBoxImgs[MisteryBox.ON][0] = objectsSprites.getSubimage(409,41,16,16);
+        misteryBoxImgs[MisteryBox.ON][1] = objectsSprites.getSubimage(426,41,16,16);
+        misteryBoxImgs[MisteryBox.ON][2] = objectsSprites.getSubimage(443,41,16,16);
+        
+        //off
+        misteryBoxImgs[MisteryBox.OFF][0] = objectsSprites.getSubimage(392,41,16,16);
+        
         
     }
     
@@ -72,14 +76,57 @@ public class ObjectManager {
 
     private void drawBigMushrooms(Graphics g, int xLvlOffset) {
         for(BigMushroom bm: bigMushrooms){
-            g.drawImage(bigMushroomImg,(int) (bm.getHitbox().x-bm.getxDrawOffset()-xLvlOffset), (int) (bm.getHitbox().y-bm.getyDrawOffset()),(int) (CONTAINER_WIDTH*0.75),(int) (CONTAINER_HEIGHT*0.75), null);
+            if(bm.isActive())
+                g.drawImage(bigMushroomImg,(int) (bm.getHitbox().x-bm.getxDrawOffset()-xLvlOffset), (int) (bm.getHitbox().y-bm.getyDrawOffset()),(int) (CONTAINER_WIDTH*0.75),(int) (CONTAINER_HEIGHT*0.75), null);
         }
     }
 
     private void drawContainers(Graphics g, int xLvlOffset) {
         for(GameContainer gC: containers)
-            if(gC.isActive())
-                 g.drawImage(misteryBoxImgs[gC.getAniIndex()],(int) (gC.getHitbox().x-gC.getxDrawOffset()-xLvlOffset), (int) (gC.getHitbox().y-gC.getyDrawOffset()),CONTAINER_WIDTH,CONTAINER_HEIGHT, null);
+                 g.drawImage(misteryBoxImgs[gC.getState()][gC.getAniIndex()],(int) (gC.getHitbox().x-gC.getxDrawOffset()-xLvlOffset), (int) (gC.getHitbox().y-gC.getyDrawOffset()),CONTAINER_WIDTH,CONTAINER_HEIGHT, null);
         
+    }
+
+    public void loadObjects(Level newLevel) {
+        bigMushrooms = newLevel.getBigMushrooms();
+        containers = newLevel.getContainers();
+    }
+    
+    //revisa si el jugador toco un objeto 
+    public void checkObjectTouched(Rectangle2D.Float hitbox){
+        for(BigMushroom bM: bigMushrooms)
+            if(bM.isActive()){
+                if(hitbox.intersects(bM.getHitbox())){
+                    applyEffectToPlayer(bM);
+                    bM.setActive(false);
+                }
+            }
+    }
+    
+    //aplicamos el efecto al jugador
+    public void applyEffectToPlayer(BigMushroom bigMushroom){
+            playing.getPlayer().changeHealth(1);
+    }
+    
+    //revisamos si el objeto fue golpeado
+    public void checkObjectHit(Rectangle2D.Float attackbox){
+        for(GameContainer gC: containers)
+            if(gC.isActive()){
+                if(gC.getHitbox().intersects(attackbox)){
+                    
+                    gC.setAnimation(false);
+                    
+                    bigMushrooms.add(new BigMushroom((int) (gC.getHitbox().x+ gC.getHitbox().width/4),(int) (gC.getHitbox().y-1.5*gC.getHitbox().height), BIG_MUSHROOM));
+                    return;
+                }
+            }
+    }
+
+    public void resetAllObjects() {
+        for(BigMushroom bM: bigMushrooms)
+            bM.reset();
+        
+        for(GameContainer gC: containers)
+            gC.reset();
     }
 }

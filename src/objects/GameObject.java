@@ -22,6 +22,7 @@ public class GameObject {
     protected int xDrawOffset, yDrawOffset; 
     protected int aniTick, aniIndex;
     protected float aniSpeed;
+    protected int state = MisteryBox.ON; //estado del objeto
     
     
     //constructor
@@ -77,6 +78,14 @@ public class GameObject {
         return aniIndex;
     }
     
+    public void setAnimation(boolean doAnimation){
+        this.doAnimation = doAnimation;
+    }
+
+    public int getState() {
+        return state;
+    }
+    
     //otros metodos
     
     //para inicializar el hitbox
@@ -96,7 +105,7 @@ public class GameObject {
         if (aniTick >= aniSpeed) {
             aniTick = 0;
             aniIndex++;
-            if (aniIndex >= getSpriteAmount(objType)) {
+            if (aniIndex >= getSpriteAmount(objType, state)) {
                 aniIndex = 0;
 //                if(objType == MISTERY_BOX || objType == BIG_MUSHROOM){
 //                    doAnimation = false;
@@ -112,9 +121,7 @@ public class GameObject {
        active = true;
        
        if(objType == MISTERY_BOX || objType == BIG_MUSHROOM)
-        doAnimation = false;
-       else
-           doAnimation = true;
+        doAnimation = true;
    }
     
 }

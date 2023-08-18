@@ -12,9 +12,9 @@ import main.Game;
  * @author karim
  */
 public class Constants {
-    
-     public static final float GRAVITY = 0.04f * Game.SCALE; //gravedad
-     public static final int ANI_SPEED = 25; //velocidad de animacion
+
+    public static final float GRAVITY = 0.04f * Game.SCALE; //gravedad
+    public static final int ANI_SPEED = 25; //velocidad de animacion
 
     //constantes para la IU del JUEGO 
     public static class UI {
@@ -28,23 +28,26 @@ public class Constants {
         }
 
         public static class PauseButtons {
+
             public static final int SOUND_SIZE_DEFAULT = 42;
             public static final int SOUND_SIZE = (int) (SOUND_SIZE_DEFAULT * Game.SCALE);
         }
-        
+
         public static class URMButtons {
+
             public static final int URM_DEFAULT_SIZE = 56;
-            public static final int URM_SIZE = (int) (URM_DEFAULT_SIZE*Game.SCALE);
+            public static final int URM_SIZE = (int) (URM_DEFAULT_SIZE * Game.SCALE);
         }
-        
-        public static class VolumeButtons{
+
+        public static class VolumeButtons {
+
             public static final int VOLUME_DEFAULT_WIDTH = 28;
             public static final int VOLUME_DEFAULT_HEIGHT = 44;
             public static final int SLIDER_DEFAULT_WIDTH = 215;
-            
-            public static final int VOLUME_WIDTH = (int) (VOLUME_DEFAULT_WIDTH*Game.SCALE);
-            public static final int VOLUME_HEIGHT = (int) (VOLUME_DEFAULT_HEIGHT*Game.SCALE);
-            public static final int SLIDER_WIDTH = (int) (SLIDER_DEFAULT_WIDTH*Game.SCALE);
+
+            public static final int VOLUME_WIDTH = (int) (VOLUME_DEFAULT_WIDTH * Game.SCALE);
+            public static final int VOLUME_HEIGHT = (int) (VOLUME_DEFAULT_HEIGHT * Game.SCALE);
+            public static final int SLIDER_WIDTH = (int) (SLIDER_DEFAULT_WIDTH * Game.SCALE);
         }
     }
 
@@ -74,10 +77,22 @@ public class Constants {
         public static final int CONTAINER_WIDTH = (int) (Game.SCALE * CONTAINER_WIDTH_DEFAULT);
         public static final int CONTAINER_HEIGHT = (int) (Game.SCALE * CONTAINER_HEIGHT_DEFAULT);
 
-        public static int getSpriteAmount(int objectType) {
+        public static class MisteryBox {
+
+            public static final int ON = 0;
+            public static final int OFF = 1;
+        }
+
+        public static int getSpriteAmount(int objectType, int state) {
             switch (objectType) {
                 case MISTERY_BOX:
-                    return 3;
+                    switch (state) {
+                        case MisteryBox.ON:
+                            return 3;
+                        case MisteryBox.OFF:
+                        default:
+                            return 1;
+                    }
                 case BIG_MUSHROOM:
                     return 0;
             }
@@ -117,9 +132,9 @@ public class Constants {
             }
             return 0;
         }
-        
-        public static int getMaxHealth(int enemy_type){
-            switch(enemy_type){
+
+        public static int getMaxHealth(int enemy_type) {
+            switch (enemy_type) {
                 case GOOMBA:
                 default:
                     return 1;
@@ -148,8 +163,9 @@ public class Constants {
         public static final int RUNLEFT = 3;
         public static final int JUMP = 4;
         public static final int DEAD = 5;
-        
-        public static class MarioConstants{
+
+        public static class MarioConstants {
+
             public static final int DEADMARIO = -1;
             public static final int MINIMARIO = 0;
             public static final int MARIO = 1;

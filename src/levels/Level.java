@@ -11,6 +11,8 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import main.Game;
+import objects.BigMushroom;
+import objects.GameContainer;
 import utilz.HelpMethods;
 
 
@@ -23,6 +25,8 @@ public class Level {
     private int[][] lvlData; //arreglo que guarda los valores de una de las componentes del mapa de tiles para saber pieza o entidad va en ese lugar
     private BufferedImage img;
     private ArrayList<Goomba> goombas;
+    private ArrayList<BigMushroom> bigMushrooms;
+    private ArrayList<GameContainer> containers;
     private int lvlTilesWide;
     private int maxTilesOffset; 
     private int maxLvlOffsetX; 
@@ -35,6 +39,8 @@ public class Level {
         this.img = img;
         createLevelData();
         createEnemies();
+        createObjects();
+        createContainers();
         calcLvlOffsets();
         calcPlayerSpawn();
     }
@@ -61,7 +67,14 @@ public class Level {
     public Point getPlayerSpawn() {
         return playerSpawn;
     }
-    
+
+    public ArrayList<BigMushroom> getBigMushrooms() {
+        return bigMushrooms;
+    }
+
+    public ArrayList<GameContainer> getContainers() {
+        return containers;
+    }
     
     //otros metodos
 
@@ -81,6 +94,14 @@ public class Level {
 
     private void calcPlayerSpawn() {
         playerSpawn = HelpMethods.getPlayerSpawn(img);
+    }
+
+    private void createObjects() {
+        bigMushrooms = HelpMethods.getBigMushrooms(img);
+    }
+
+    private void createContainers() {
+        containers = HelpMethods.getGameContainers(img);
     }
     
     

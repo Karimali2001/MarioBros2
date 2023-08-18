@@ -56,7 +56,7 @@ public class Player extends Entity {
         this.playing = playing;
         state = Constants.PlayerConstants.RIGHT;
         
-        maxHealth = 1;
+        maxHealth = 2;
         currentHealth = maxHealth;
         
         walkSpeed = 1.0f*Game.SCALE;
@@ -123,6 +123,10 @@ public class Player extends Entity {
         updateAttackBox();
 
         updatePos(); //actualiza la posicion del jugador
+        
+        if(moving)
+            checkObjectTouched();
+        
         if(inAir)
             checkAttack(); //reviso el ataque
 
@@ -316,6 +320,8 @@ public class Player extends Entity {
         }else if(currentHealth >= maxHealth) {
             currentHealth = maxHealth;
         }
+        
+        System.out.println("HEalth: "+currentHealth);
             
     }
 
@@ -372,6 +378,7 @@ public class Player extends Entity {
         
         attackChecked = true;
         playing.checkEnemyHit(attackBox);
+        playing.checkObjectHit(attackBox);
     
     }
 
@@ -383,6 +390,10 @@ public class Player extends Entity {
        attackBox.width = (10*Game.SCALE);
        attackBox.x = hitbox.x+(2*Game.SCALE);
        attackBox.y = hitbox.y+(9*Game.SCALE);
+    }
+
+    private void checkObjectTouched() {
+        playing.checkPotionTouched(hitbox);
     }
 
 
