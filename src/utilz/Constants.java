@@ -71,11 +71,17 @@ public class Constants {
 
         public static final int BIG_MUSHROOM = 0;
         public static final int MISTERY_BOX = 1;
+        public static final int FALL = 2;
 
         public static final int CONTAINER_WIDTH_DEFAULT = 32;
         public static final int CONTAINER_HEIGHT_DEFAULT = 32;
         public static final int CONTAINER_WIDTH = (int) (Game.SCALE * CONTAINER_WIDTH_DEFAULT);
         public static final int CONTAINER_HEIGHT = (int) (Game.SCALE * CONTAINER_HEIGHT_DEFAULT);
+        
+        public static final int FALL_WIDTH_DEFAULT = 32;
+        public static final int FALL_HEIGHT_DEFAULT = 32;
+        public static final int FALL_WIDTH = (int) (Game.SCALE * FALL_WIDTH_DEFAULT);
+        public static final int FALL_HEIGHT = (int) (Game.SCALE * FALL_HEIGHT_DEFAULT);
 
         public static class MisteryBox {
 

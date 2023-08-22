@@ -4,6 +4,7 @@
  */
 package objects;
 
+import entities.Player;
 import gamestates.Playing;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
@@ -22,9 +23,11 @@ public class ObjectManager {
     //atributos
     private Playing playing;
     private BufferedImage[][] misteryBoxImgs;
+    private BufferedImage fallImg;
     private BufferedImage bigMushroomImg;
     private ArrayList<BigMushroom> bigMushrooms;
     private ArrayList<GameContainer> containers;
+    private ArrayList<Fall> falls;
     
     
     //constructores
@@ -54,6 +57,9 @@ public class ObjectManager {
         
         //off
         misteryBoxImgs[MisteryBox.OFF][0] = objectsSprites.getSubimage(392,41,16,16);
+        
+        //fall sprites
+        fallImg = LoadSave.getSpriteAtlas(LoadSave.NOBACKGROUND_SPRITE).getSubimage(0, 0, 32, 16);
         
         
     }
@@ -88,8 +94,9 @@ public class ObjectManager {
     }
 
     public void loadObjects(Level newLevel) {
-        bigMushrooms = newLevel.getBigMushrooms();
-        containers = newLevel.getContainers();
+        bigMushrooms = new ArrayList(newLevel.getBigMushrooms());
+        containers = new ArrayList(newLevel.getContainers());
+        falls = newLevel.getFalls();
     }
     
     //revisa si el jugador toco un objeto 
@@ -121,8 +128,19 @@ public class ObjectManager {
                 }
             }
     }
+    
+    //reviso si el jugador se cayo
+    public void checkPlayerFall(Player p){
+        for(Fall f: falls){
+            if(f.getHitbox().intersects(p.getHitbox())){
+                p.kill();
+            }
+        }
+    }
 
     public void resetAllObjects() {
+        loadObjects(playing.getLevelManager().getCurrentLevel());
+        
         for(BigMushroom bM: bigMushrooms)
             bM.reset();
         

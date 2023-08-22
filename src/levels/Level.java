@@ -1,4 +1,4 @@
-/*
+ /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import main.Game;
 import objects.BigMushroom;
+import objects.Fall;
 import objects.GameContainer;
 import utilz.HelpMethods;
 
@@ -27,6 +28,7 @@ public class Level {
     private ArrayList<Goomba> goombas;
     private ArrayList<BigMushroom> bigMushrooms;
     private ArrayList<GameContainer> containers;
+    private ArrayList<Fall> falls;
     private int lvlTilesWide;
     private int maxTilesOffset; 
     private int maxLvlOffsetX; 
@@ -41,6 +43,7 @@ public class Level {
         createEnemies();
         createObjects();
         createContainers();
+        createFalls();
         calcLvlOffsets();
         calcPlayerSpawn();
     }
@@ -102,6 +105,14 @@ public class Level {
 
     private void createContainers() {
         containers = HelpMethods.getGameContainers(img);
+    }
+
+    private void createFalls() {
+        falls = HelpMethods.getFalls(img);
+    }
+    
+    public ArrayList<Fall> getFalls(){
+        return falls;
     }
     
     

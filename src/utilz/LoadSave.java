@@ -28,7 +28,7 @@ public class LoadSave {
 
     //atributos
     public static final String MARIO_SPRITES = "res/sprites/marioTiles.png"; //sprites Mario
-    public static final String LEVEL1_SPRITE = "res/levels/outside_sprites.png"; //tiles de piso techo
+    public static final String NOBACKGROUND_SPRITE = "res/levels/outside_sprites.png"; //tiles de piso techo
     public static final String LEVELMARIO_SPRITE = "res/levels/marioLevelTiles.png"; //tiles de piso techo
     //public static final String LEVEL_ONE_DATA = "res/levels/level_one_data_long.png"; //tile map
     public static final String LEVEL_ONE_DATA = "res/levels/level_one_data_long2.png"; //tile map

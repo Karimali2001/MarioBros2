@@ -15,6 +15,7 @@ import main.Game;
 import static main.Game.GAME_HEIGHT;
 import static main.Game.GAME_WIDTH;
 import objects.BigMushroom;
+import objects.Fall;
 import objects.GameContainer;
 import static utilz.LoadSave.LEVEL_ONE_DATA;
 import static utilz.LoadSave.getSpriteAtlas;
@@ -216,6 +217,24 @@ public class HelpMethods {
                 if (value == MISTERY_BOX)//por si la componente es mayor a la cantidad de tiles que disponemos (48)
                 {
                     list.add(new GameContainer(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
+                }
+
+            }
+        }
+        return list;
+    }
+
+    public static ArrayList<Fall> getFalls(BufferedImage img) {
+        ArrayList<Fall> list = new ArrayList();
+        //recorremos el tile map revisando por pixel por pixel
+        for (int j = 0; j < img.getHeight(); j++) {
+            for (int i = 0; i < img.getWidth(); i++) {
+                Color color = new Color(img.getRGB(i, j)); //obtenemos el color del pixel en la posicion i,j de la imagen
+                int value = color.getBlue(); //agarramos el valor de la componente R
+
+                if (value == FALL)//por si la componente es mayor a la cantidad de tiles que disponemos (48)
+                {
+                    list.add(new Fall(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
                 }
 
             }

@@ -124,8 +124,10 @@ public class Player extends Entity {
 
         updatePos(); //actualiza la posicion del jugador
         
-        if(moving)
+        if(moving){
             checkObjectTouched();
+            checkIfFelt();
+        }
         
         if(inAir)
             checkAttack(); //reviso el ataque
@@ -394,6 +396,14 @@ public class Player extends Entity {
 
     private void checkObjectTouched() {
         playing.checkPotionTouched(hitbox);
+    }
+
+    public void kill() {
+        currentHealth = 0;
+    }
+
+    private void checkIfFelt() {
+        playing.checkIfFelt(this);
     }
 
 

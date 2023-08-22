@@ -68,7 +68,7 @@ public class LevelManager {
     }
 
     private void importOutsideSprites() {
-        BufferedImage img = LoadSave.getSpriteAtlas(LoadSave.LEVEL1_SPRITE);
+        BufferedImage img = LoadSave.getSpriteAtlas(LoadSave.NOBACKGROUND_SPRITE);
         levelSprite = new BufferedImage[48]; //48 pq la imagen de tiles es 12 tiles de ancho*4tiles de largo
         //4 es la altura y 12 es el ancho de cada pieza
                 levelSprite[11] = img;

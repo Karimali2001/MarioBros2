@@ -121,6 +121,10 @@ public class Playing extends State implements StateMethods {
     public void setLevelCompleted(boolean lvlCompleted) {
         this.lvlCompleted = lvlCompleted;
     }
+    
+    public LevelManager getLevelManager(){
+        return levelManager;
+    }
     //otros metodos
 
     //para el movimiento del personaje cuando el jugador se mete en otra ventana
@@ -335,6 +339,10 @@ public class Playing extends State implements StateMethods {
 
     public void checkObjectHit(Rectangle2D.Float attackBox) {
         objectManager.checkObjectHit(attackBox);
+    }
+
+    public void checkIfFelt(Player p) {
+        objectManager.checkPlayerFall(p);
     }
 
 }
